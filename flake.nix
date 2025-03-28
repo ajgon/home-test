@@ -1,0 +1,105 @@
+{
+  description = "homelab";
+
+  nixConfig = {
+    substituters = [
+      "http://10.100.10.1:9000/nix?priority=30"
+      "https://cache.nixos.org"
+    ];
+    trusted-public-keys = [
+      "homelab:mM9UlYU+WDQSnxRfnV0gNcE+gLD/F9nkGIz97E22VeU="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
+    extra-substituters = [
+      "https://cache.garnix.io"
+      "https://deploy-rs.cachix.org"
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "deploy-rs.cachix.org-1:xfNobmiwF/vzvK1gpfediPwpdIP0rpDV2rYqx40zdSI="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+    builders-use-substitutes = true;
+    connect-timeout = 5;
+    warn-dirty = false;
+  };
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    flake-utils.url = "github:numtide/flake-utils";
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs =
+    {
+      self,
+      flake-utils,
+      nixpkgs,
+      pre-commit-hooks,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [ "bws" ];
+        };
+      in
+      {
+        checks.pre-commit-check = pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            actionlint.enable = true;
+            check-json.enable = true;
+            markdownlint.enable = true;
+            shellcheck.enable = true;
+            terraform-format.enable = true;
+            tflint.enable = true;
+            yamllint.enable = true;
+
+            check-case-conflicts.enable = true;
+            check-shebang-scripts-are-executable.enable = true;
+            mixed-line-endings.enable = true;
+
+            deadnix.enable = true;
+            flake-checker = {
+              enable = true;
+              package = pkgs.flake-checker;
+            };
+            statix.enable = true;
+            nixfmt-rfc-style = {
+              enable = true;
+              excludes = [ ".direnv" ];
+            };
+          };
+        };
+
+        devShells.default = pkgs.mkShell {
+          buildInputs = self.checks.${system}.pre-commit-check.enabledPackages ++ [
+            pkgs.age
+            pkgs.bws
+            pkgs.envsubst
+            pkgs.go-task
+            pkgs.kubernetes-helm
+            pkgs.kustomize
+            pkgs.jq
+            pkgs.talosctl
+            pkgs.yq-go
+
+            # extra linters
+            pkgs.kubeconform
+          ];
+
+          shellHook = self.checks.${system}.pre-commit-check.shellHook + ''
+            source .env
+          '';
+        };
+      }
+    );
+}

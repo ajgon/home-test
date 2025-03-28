@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://www.talos.dev/v1.9/schemas/v1alpha1_config.schema.json
+
+version: v1alpha1
+
+machine:
+  network:
+    hostname: eddy
+
+  disks:
+    - device: /dev/sdb
+      partitions:
+        - mountpoint: /var/mnt/extra
+
+  install:
+    disk: /dev/sda
+
