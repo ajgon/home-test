@@ -28,7 +28,7 @@ function main() {
     # shellcheck disable=SC2034
     local -r LOG_LEVEL="info"
 
-    check_env KUBERNETES_VERSION TALOS_VERSION
+    check_env BWS_ACCESS_TOKEN KUBERNETES_VERSION TALOS_VERSION
     check_cli bws minijinja-cli yq
 
     if [[ -z "${NODE_BASE}" || -z "${NODE_PATCH}" ]]; then
@@ -53,7 +53,7 @@ function main() {
     echo "${patch}" > "${TMPFILE}"
 
     # shellcheck disable=SC2016
-    if ! machine_config=$(echo "${base}" | yq --exit-status eval-all '. as $item ireduce ({}; . * $item )' - "${TMPFILE}" 2>/dev/null) || [[ -z "${machine_config}" ]]; then
+    if ! machine_config=$(echo "${base}" | yq --exit-status eval-all '. as $item ireduce ({}; . *d $item )' - "${TMPFILE}" 2>/dev/null) || [[ -z "${machine_config}" ]]; then
         log error "Failed to merge configs" "base=$(basename "${NODE_BASE}")" "patch=$(basename "${NODE_PATCH}")"
     fi
 

@@ -36,8 +36,6 @@ machine:
       - deviceSelector:
           hardwareAddr: 02:00:0a:64:*
         dhcp: false
-        addresses:
-          - 10.100.31.7/16
         routes:
           - network: 0.0.0.0/0
             gateway: 10.100.1.1
@@ -191,3 +189,5 @@ cluster:
     disabled: true
 
   allowSchedulingOnControlPlanes: true
+
+# vim:ft=yaml

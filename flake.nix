@@ -101,6 +101,7 @@
           shellHook =
             self.checks.${system}.pre-commit-check.shellHook
             + ''
+              export BWS_ACCESS_TOKEN="$(${pkgs.lib.getExe pkgs.rbw} get BWS_ACCESS_TOKEN)"
               export ROOT_DIR="$(git rev-parse --show-toplevel)"
               source .env
 

@@ -60,26 +60,18 @@ function apply_talos_config() {
 function bootstrap_talos() {
     log debug "Bootstrapping Talos"
 
-    local bootstrapped=true
-
     if ! controller=$(talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1) || [[ -z "${controller}" ]]; then
         log error "No Talos controller found"
     fi
 
     log debug "Talos controller discovered" "controller=${controller}"
 
-    until output=$(talosctl --nodes "${controller}" bootstrap 2>&1); do
-        if [[ "${bootstrapped}" == true && "${output}" == *"AlreadyExists"* ]]; then
-            log info "Talos is bootstrapped" "controller=${controller}"
-            break
-        fi
-
-        # Set bootstrapped to false after the first attempt
-        bootstrapped=false
-
-        log info "Talos bootstrap failed, retrying in 10 seconds..." "controller=${controller}"
+    until output=$(talosctl --nodes "${controller}" bootstrap 2>&1 || true) && [[ "${output}" == *"AlreadyExists"* ]]; do
+        log info "Talos bootstrap in progress, waiting 10 seconds..." "controller=${controller}"
         sleep 10
     done
+
+    log info "Talos is bootstrapped" "controller=${controller}"
 }
 
 # Fetch the kubeconfig from a controller node
@@ -118,14 +110,7 @@ function wait_for_nodes() {
 function apply_crds() {
     log debug "Applying CRDs"
 
-    local -r crds=(
-        # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
-        https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/experimental-install.yaml
-        # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
-        https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.81.0/stripped-down-crds.yaml
-        # renovate: datasource=github-releases depName=kubernetes-sigs/external-dns
-        https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.16.1/docs/sources/crd/crd-manifest.yaml
-    )
+    mapfile -t crds < <(yq '.[]' "${ROOT_DIR}/bootstrap/crds.yaml")
 
     for crd in "${crds[@]}"; do
         if kubectl diff --filename "${crd}" &>/dev/null; then
@@ -218,7 +203,7 @@ function apply_helm_releases() {
 }
 
 function main() {
-    check_env CLUSTER_NAME KUBECONFIG KUBERNETES_VERSION ROOK_DISK TALOS_VERSION
+    check_env BWS_ACCESS_TOKEN CLUSTER_NAME KUBECONFIG KUBERNETES_VERSION ROOK_DISK TALOS_VERSION
     check_cli bws jq kubectl kustomize minijinja-cli talosctl yq
 
     if ! bws project list &>/dev/null; then
@@ -226,7 +211,7 @@ function main() {
     fi
 
     # Bootstrap the Talos node configuration
-    apply_talos_config
+    # apply_talos_config
     # bootstrap_talos
     # fetch_kubeconfig
     #
@@ -234,7 +219,7 @@ function main() {
     # wait_for_nodes
     # wipe_rook_disks
     # apply_crds
-    # apply_resources
+    apply_resources
     # apply_helm_releases
     #
     # log info "Congrats! The cluster is bootstrapped and Flux is syncing the Git repository"

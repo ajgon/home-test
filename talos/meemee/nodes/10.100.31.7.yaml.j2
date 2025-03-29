@@ -6,6 +6,9 @@ version: v1alpha1
 machine:
   network:
     hostname: ed
+    interfaces:
+      - addresses:
+          - 10.100.31.7/16
 
   disks:
     - device: /dev/sdb
@@ -14,3 +17,5 @@ machine:
 
   install:
     disk: /dev/sda
+
+# vim:ft=yaml
