@@ -6,17 +6,17 @@ debug: false
 
 machine:
   type: controlplane
-  token: ${TALCONFIG_MACHINE_TOKEN}
+  token: "{{ ENV.TALCONFIG_MACHINE_TOKEN }}"
   ca:
-    crt: ${TALCONFIG_MACHINE_CA_CRT}
-    key: ${TALCONFIG_MACHINE_CA_KEY}
+    crt: "{{ ENV.TALCONFIG_MACHINE_CA_CRT }}"
+    key: "{{ ENV.TALCONFIG_MACHINE_CA_KEY }}"
 
   certSANs:
     - 127.0.0.1
     - 10.100.31.5
 
   kubelet:
-    image: ghcr.io/siderolabs/kubelet:v${KUBERNETES_VERSION}
+    image: "ghcr.io/siderolabs/kubelet:v{{ ENV.KUBERNETES_VERSION }}"
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraMounts:
@@ -47,7 +47,7 @@ machine:
       - 10.100.1.1
 
   install:
-    image: ghcr.io/siderolabs/installer:v${TALOS_VERSION}
+    image: "ghcr.io/siderolabs/installer:v{{ ENV.TALOS_VERSION }}"
     wipe: false
 
     extraKernelArgs:
@@ -71,7 +71,6 @@ machine:
     kubePrism:
       enabled: true
       port: 7445
-    # Configures host DNS caching resolver.
     hostDNS:
       enabled: true
       resolveMemberNames: true
@@ -90,19 +89,19 @@ machine:
           discard_unpacked_layers = false
 
   sysctls:
-    net.core.rmem_max: "67108864"          # Cloudflared / QUIC
-    net.core.wmem_max: "67108864"          # Cloudflared / QUIC
-    net.ipv4.tcp_fastopen: "3"             # Send and accept data in the opening SYN packet
-    vm.nr_hugepages: "1024"                # PostgreSQL
+    net.core.rmem_max: "67108864"  # Cloudflared / QUIC
+    net.core.wmem_max: "67108864"  # Cloudflared / QUIC
+    net.ipv4.tcp_fastopen: "3"     # Send and accept data in the opening SYN packet
+    vm.nr_hugepages: "1024"        # PostgreSQL
 
 cluster:
-  id: ${TALCONFIG_CLUSTER_ID}
-  secret: ${TALCONFIG_CLUSTER_SECRET}
+  id: "{{ ENV.TALCONFIG_CLUSTER_ID }}"
+  secret: "{{ ENV.TALCONFIG_CLUSTER_SECRET }}"
   controlPlane:
     endpoint: https://10.100.31.5:6443
   clusterName: meemee
   network:
-    dnsDomain: cluster.local # The domain used by Kubernetes DNS.
+    dnsDomain: cluster.local
     podSubnets:
       - 172.30.0.0/16
     serviceSubnets:
@@ -110,19 +109,18 @@ cluster:
     cni:
       name: none
 
-  token: ${TALCONFIG_CLUSTER_TOKEN}
-  secretboxEncryptionSecret: ${TALCONFIG_CLUSTER_SECRETBOXENCRYPTIONSECRET}
+  token: "{{ ENV.TALCONFIG_CLUSTER_TOKEN }}"
+  secretboxEncryptionSecret: "{{ ENV.TALCONFIG_CLUSTER_SECRETBOXENCRYPTIONSECRET }}"
   ca:
-    crt: ${TALCONFIG_CLUSTER_CA_CRT}
-    key: ${TALCONFIG_CLUSTER_CA_KEY}
+    crt: "{{ ENV.TALCONFIG_CLUSTER_CA_CRT }}"
+    key: "{{ ENV.TALCONFIG_CLUSTER_CA_KEY }}"
   aggregatorCA:
-    crt: ${TALCONFIG_CLUSTER_AGGREGATORCA_CRT}
-    key: ${TALCONFIG_CLUSTER_AGGREGATORCA_KEY}
+    crt: "{{ ENV.TALCONFIG_CLUSTER_AGGREGATORCA_CRT }}"
+    key: "{{ ENV.TALCONFIG_CLUSTER_AGGREGATORCA_KEY }}"
   serviceAccount:
-    key: ${TALCONFIG_CLUSTER_SERVICEACCOUNT_KEY}
-  # API server specific configuration options.
+    key: "{{ ENV.TALCONFIG_CLUSTER_SERVICEACCOUNT_KEY }}"
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v${KUBERNETES_VERSION}
+    image: "registry.k8s.io/kube-apiserver:v{{ ENV.KUBERNETES_VERSION }}"
     certSANs:
       - 127.0.0.1
       - 10.100.31.5
@@ -156,14 +154,14 @@ cluster:
 
   # Controller manager server specific configuration options.
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v${KUBERNETES_VERSION}
+    image: "registry.k8s.io/kube-controller-manager:v{{ ENV.KUBERNETES_VERSION }}"
     extraArgs:
       bind-address: 0.0.0.0
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:v${KUBERNETES_VERSION}
+    image: "registry.k8s.io/kube-proxy:v{{ ENV.KUBERNETES_VERSION }}"
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v${KUBERNETES_VERSION}
+    image: "registry.k8s.io/kube-scheduler:v{{ ENV.KUBERNETES_VERSION }}"
     extraArgs:
       bind-address: 0.0.0.0
     config:
@@ -185,8 +183,8 @@ cluster:
                     whenUnsatisfiable: ScheduleAnyway
   etcd:
     ca:
-      crt: ${TALCONFIG_CLUSTER_ETCD_CA_CRT}
-      key: ${TALCONFIG_CLUSTER_ETCD_CA_KEY}
+      crt: "{{ ENV.TALCONFIG_CLUSTER_ETCD_CA_CRT }}"
+      key: "{{ ENV.TALCONFIG_CLUSTER_ETCD_CA_KEY }}"
     advertisedSubnets:
       - 10.100.31.0/24
   coreDNS:

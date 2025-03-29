@@ -86,9 +86,11 @@
             pkgs.bws
             pkgs.envsubst
             pkgs.go-task
+            pkgs.kubectl
             pkgs.kubernetes-helm
             pkgs.kustomize
             pkgs.jq
+            pkgs.minijinja
             pkgs.talosctl
             pkgs.yq-go
 
@@ -96,9 +98,14 @@
             pkgs.kubeconform
           ];
 
-          shellHook = self.checks.${system}.pre-commit-check.shellHook + ''
-            source .env
-          '';
+          shellHook =
+            self.checks.${system}.pre-commit-check.shellHook
+            + ''
+              export ROOT_DIR="$(git rev-parse --show-toplevel)"
+              source .env
+
+              bws secret list | jq -r '.[] | select(.key == "TALCONFIG_TALOSCONFIG") | .value' > "$ROOT_DIR/talosconfig"
+            '';
         };
       }
     );
