@@ -211,18 +211,18 @@ function main() {
     fi
 
     # Bootstrap the Talos node configuration
-    # apply_talos_config
-    # bootstrap_talos
+    apply_talos_config
+    bootstrap_talos
     fetch_kubeconfig
     #
     # # Apply resources and Helm releases
-    # wait_for_nodes
-    # wipe_rook_disks
+    wait_for_nodes
+    wipe_rook_disks
     apply_crds
     # apply_resources
     apply_helm_releases
-    #
-    # log info "Congrats! The cluster is bootstrapped and Flux is syncing the Git repository"
+
+    log info "Congrats! The cluster is bootstrapped and Flux is syncing the Git repository"
 }
 
 main "$@"
