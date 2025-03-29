@@ -110,7 +110,7 @@ function wait_for_nodes() {
 function apply_crds() {
     log debug "Applying CRDs"
 
-    mapfile -t crds < <(yq '.[]' "${ROOT_DIR}/bootstrap/crds.yaml")
+    mapfile -t crds < <(yq '.[]' "${ROOT_DIR}/bootstrap/${CLUSTER_NAME}/crds.yaml")
 
     for crd in "${crds[@]}"; do
         if kubectl diff --filename "${crd}" &>/dev/null; then
@@ -129,7 +129,7 @@ function apply_crds() {
 function apply_resources() {
     log debug "Applying resources"
 
-    local -r resources_file="${ROOT_DIR}/bootstrap/resources.yaml.j2"
+    local -r resources_file="${ROOT_DIR}/bootstrap/${CLUSTER_NAME}/resources.yaml.j2"
 
     if ! output=$(render_template "${resources_file}") || [[ -z "${output}" ]]; then
         exit 1
@@ -189,7 +189,7 @@ function wipe_rook_disks() {
 function apply_helm_releases() {
     log debug "Applying Helm releases with helmfile"
 
-    local -r helmfile_file="${ROOT_DIR}/bootstrap/helmfile.yaml"
+    local -r helmfile_file="${ROOT_DIR}/bootstrap/${CLUSTER_NAME}/helmfile.yaml"
 
     if [[ ! -f "${helmfile_file}" ]]; then
         log error "File does not exist" "file=${helmfile_file}"
@@ -213,14 +213,14 @@ function main() {
     # Bootstrap the Talos node configuration
     # apply_talos_config
     # bootstrap_talos
-    # fetch_kubeconfig
+    fetch_kubeconfig
     #
     # # Apply resources and Helm releases
     # wait_for_nodes
     # wipe_rook_disks
-    # apply_crds
-    apply_resources
-    # apply_helm_releases
+    apply_crds
+    # apply_resources
+    apply_helm_releases
     #
     # log info "Congrats! The cluster is bootstrapped and Flux is syncing the Git repository"
 }

@@ -7,4 +7,5 @@ type: application
 dependencies:
   - name: cilium
     version: 1.17.2
-    repository: oci://ghcr.io/home-operations/charts-mirror/cilium
+    repository: oci://ghcr.io/home-operations/charts-mirror
+    alias: parent

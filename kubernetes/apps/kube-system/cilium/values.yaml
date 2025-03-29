@@ -1,5 +1,7 @@
 ---
-cilium:
+pools: []
+
+parent:
   autoDirectNodeRoutes: true
   bandwidthManager:
     enabled: true

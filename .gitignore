@@ -1,3 +1,6 @@
 .direnv
 kubeconfig
 talosconfig
+
+charts
+Chart.lock

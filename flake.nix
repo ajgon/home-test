@@ -82,20 +82,23 @@
 
         devShells.default = pkgs.mkShell {
           buildInputs = self.checks.${system}.pre-commit-check.enabledPackages ++ [
-            pkgs.age
             pkgs.bws
-            pkgs.envsubst
             pkgs.go-task
-            pkgs.kubectl
-            pkgs.kubernetes-helm
-            pkgs.kustomize
+            pkgs.helmfile
             pkgs.jq
+            pkgs.k9s
+            pkgs.kubeconform
+            pkgs.kubectl
+            pkgs.kustomize
             pkgs.minijinja
             pkgs.talosctl
             pkgs.yq-go
 
-            # extra linters
-            pkgs.kubeconform
+            (pkgs.wrapHelm pkgs.kubernetes-helm {
+              plugins = [
+                pkgs.kubernetes-helmPlugins.helm-diff
+              ];
+            })
           ];
 
           shellHook =
