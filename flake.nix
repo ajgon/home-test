@@ -58,7 +58,10 @@
             actionlint.enable = true;
             check-json.enable = true;
             markdownlint.enable = true;
-            shellcheck.enable = true;
+            shellcheck = {
+              enable = true;
+              excludes = [ ".envrc" ];
+            };
             terraform-format.enable = true;
             tflint.enable = true;
             yamllint.enable = true;
@@ -72,11 +75,11 @@
               enable = true;
               package = pkgs.flake-checker;
             };
-            statix.enable = true;
             nixfmt-rfc-style = {
               enable = true;
               excludes = [ ".direnv" ];
             };
+            statix.enable = true;
           };
         };
 
