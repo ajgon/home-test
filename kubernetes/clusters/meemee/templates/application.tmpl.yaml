@@ -9,8 +9,9 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    server: https://kubernetes.default.svc
     namespace: '{{ $application.namespace }}'
+    server: https://kubernetes.default.svc
+  project: default
   source:
     repoURL: 'https://github.com/ajgon/home-test.git'
     targetRevision: 'master'
@@ -20,7 +21,6 @@ spec:
         {{- if $application.helmValues }}
         {{- tpl $application.helmValues $ | nindent 8 }}
         {{- end }}
-  project: default
 {{- end}}
 {{- end}}
 {{- end}}
