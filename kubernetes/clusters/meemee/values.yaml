@@ -4,3 +4,4 @@ applications:
     - name: spegel
       namespace: kube-system
       path: kubernetes/apps/kube-system/spegel
+      psp: privileged
