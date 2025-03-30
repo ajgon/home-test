@@ -3,4 +3,4 @@ applications:
   spegel:
     - name: spegel
       namespace: kube-system
-      path: kubernetes/apps/tools/spegel
+      path: kubernetes/apps/kube-system/spegel
