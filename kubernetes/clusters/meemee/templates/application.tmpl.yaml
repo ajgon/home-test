@@ -16,11 +16,13 @@ spec:
     repoURL: 'https://github.com/ajgon/home-test.git'
     targetRevision: 'master'
     path: '{{ $application.path }}'
+    {{- if $application.helmValues }}
     helm:
       values: |
-        {{- if $application.helmValues }}
         {{- tpl $application.helmValues $ | nindent 8 }}
-        {{- end }}
+    {{- else }}
+    helm: {}
+    {{- end }}
   syncPolicy:
     automated:
       prune: true
