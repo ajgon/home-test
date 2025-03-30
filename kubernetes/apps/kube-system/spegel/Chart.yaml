@@ -8,4 +8,3 @@ dependencies:
   - name: spegel
     version: 0.1.1
     repository: oci://ghcr.io/spegel-org/helm-charts
-    alias: parent

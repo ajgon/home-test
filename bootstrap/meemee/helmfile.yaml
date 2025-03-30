@@ -15,12 +15,14 @@ releases:
     version: 1.17.2
     values:
       - '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/cilium/values.yaml'
-      # - bgpControlPlane:
-      #     enabled: false
-      #   cluster:
-      #     name: meemee
-      #   l2announcements:
-      #     enabled: true
+
+      # meeme is ran on VMs, native routing will fail miserably,
+      # so let cilium tunnel everything
+      - ipv4NativeRoutingCIDR: ""
+        autoDirectNodeRoutes: false
+        routingMode: tunnel
+        enableIPv4BIGTCP: false
+        tunnelProtocol: geneve
     hooks:
       # Wait for cilium CRDs to be available
       - events: ['postsync']
@@ -55,17 +57,13 @@ releases:
   - name: spegel
     namespace: kube-system
     atomic: true
-    chart: oci://ghcr.io/spegel-org/helm-charts/spegel
-    version: 0.1.1
+    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/spegel'
     needs: ['kube-system/coredns']
-    values:
-      - '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/spegel/values.yaml'
-  #
-  #
-  # # - name: cert-manager
-  # #   namespace: cert-manager
-  # #   atomic: true
-  # #   chart: oci://ghcr.io/home-operations/charts-mirror/cert-manager
-  # #   version: v1.17.1
-  # #   values: ['{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/cert-manager/cert-manager/app/helm/values.yaml']
-  # #   needs: ['kube-system/spegel']
+
+  - name: argocd
+    namespace: argocd
+    atomic: true
+    chart: oci://ghcr.io/argoproj/argo-helm/argo-cd
+    version: 7.8.15
+    values: ['{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/argocd/argocd/values.yaml']
+    needs: ['kube-system/spegel']
