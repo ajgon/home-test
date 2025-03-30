@@ -1,6 +1,9 @@
 ---
 applications:
   spegel:
+    - name: coredns
+      namespace: kube-system
+      path: kubernetes/apps/kube-system/coredns
     - name: spegel
       namespace: kube-system
       path: kubernetes/apps/kube-system/spegel
