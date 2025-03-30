@@ -20,8 +20,6 @@ spec:
     helm:
       values: |
         {{- tpl $application.helmValues $ | nindent 8 }}
-    {{- else }}
-    helm: {}
     {{- end }}
   syncPolicy:
     automated:
