@@ -92,6 +92,7 @@
             pkgs.k9s
             pkgs.kubeconform
             pkgs.kubectl
+            pkgs.kubectl-node-shell
             pkgs.kustomize
             pkgs.minijinja
             pkgs.talosctl

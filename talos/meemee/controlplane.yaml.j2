@@ -27,9 +27,9 @@ machine:
     extraConfig:
       serializeImagePulls: false
 
-    nodeIP:
-      validSubnets:
-        - 10.100.31.0/24
+    # nodeIP:
+    #   validSubnets:
+    #     - 10.100.31.0/16
 
   network:
     interfaces:
@@ -184,7 +184,7 @@ cluster:
       crt: "{{ ENV.TALCONFIG_CLUSTER_ETCD_CA_CRT }}"
       key: "{{ ENV.TALCONFIG_CLUSTER_ETCD_CA_KEY }}"
     advertisedSubnets:
-      - 10.100.31.0/24
+      - 10.100.31.0/16
   coreDNS:
     disabled: true
 

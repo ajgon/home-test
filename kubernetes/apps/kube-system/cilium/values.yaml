@@ -1,83 +1,87 @@
 ---
-pools: []
-
-parent:
-  autoDirectNodeRoutes: true
-  bandwidthManager:
-    enabled: true
-    bbr: true
-  bpf:
-    datapathMode: netkit
-    masquerade: true
-    preallocateMaps: true
-  bgpControlPlane:
-    enabled: true
-  cgroup:
-    autoMount:
-      enabled: false
-    hostRoot: /sys/fs/cgroup
-  cluster:
-    id: 1
-    name: kubernetes
-  cni:
-    exclusive: false  # for multus
+bandwidthManager:
+  enabled: true
+  bbr: true
+bpf:
+  datapathMode: netkit
+  masquerade: true
+  preallocateMaps: true
+# bpf:
+#   masquerade: false
+bgpControlPlane:
+  enabled: true
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+cluster:
+  id: 1
+  name: kubernetes
+cni:
+  exclusive: false  # for multus
+dashboards:
+  enabled: false
+devices: enp+
+# enableRuntimeDeviceDetection: true
+endpointRoutes:
+  enabled: true
+envoy:
+  rollOutPods: true
+hubble:
+  enabled: false
+ipam:
+  mode: kubernetes
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445
+kubeProxyReplacement: true
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+l2announcements:
+  enabled: true
+loadBalancer:
+  algorithm: maglev
+  mode: snat # vm
+localRedirectPolicy: true
+operator:
+  enabled: true
   dashboards:
-    enabled: false
-  enableIPv4BIGTCP: true  # @todo, does it make sense on 2.5G?
-  enableRuntimeDeviceDetection: true
-  endpointRoutes:
-    enabled: true
-  envoy:
-    rollOutPods: true
-  hubble:
-    enabled: false  # @todo enable later
-  ipam:
-    mode: kubernetes
-  ipv4NativeRoutingCIDR: 172.30.0.0/16
-  k8sServiceHost: localhost
-  k8sServicePort: 7445
-  kubeProxyReplacement: true
-  kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-  l2announcements:
-    enabled: false
-  loadBalancer:
-    algorithm: maglev
-    mode: snat
-  localRedirectPolicy: true
-  operator:
-    enabled: true
-    dashboards:
-      enabled: false  # @todo grafana dashboards
-    prometheus:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-    replicas: 2
-    rollOutPods: true
+    enabled: false  # @todo grafana dashboards
   prometheus:
     enabled: true
     serviceMonitor:
       enabled: true
-      trustCRDsExist: true
-  rollOutCiliumPods: true
-  routingMode: native
-  securityContext:
-    capabilities:
-      ciliumAgent:
-        - BPF
-        - CHOWN
-        - DAC_OVERRIDE
-        - FOWNER
-        - IPC_LOCK
-        - KILL
-        - NET_ADMIN
-        - NET_RAW
-        - PERFMON
-        - SETGID
-        - SETUID
-        - SYS_ADMIN
-        - SYS_RESOURCE
-      cleanCiliumState:
-        - NET_ADMIN
-        - SYS_ADMIN
-        - SYS_RESOURCE
+  replicas: 2
+  rollOutPods: true
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
+rollOutCiliumPods: true
+securityContext:
+  capabilities:
+    ciliumAgent:
+      - BPF
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - IPC_LOCK
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - PERFMON
+      - SETGID
+      - SETUID
+      - SYS_ADMIN
+      - SYS_RESOURCE
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
+
+
+
+# ipv4NativeRoutingCIDR: 172.30.0.0/16
+autoDirectNodeRoutes: false
+routingMode: tunnel
+enableIPv4BIGTCP: false
+tunnelProtocol: geneve

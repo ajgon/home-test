@@ -94,15 +94,24 @@ function wait_for_nodes() {
     log debug "Waiting for nodes to be available"
 
     # Skip waiting if all nodes are 'Ready=True'
-    if kubectl wait nodes --for=condition=Ready=True --all --timeout=10s &>/dev/null; then
+    if kubectl wait nodes --for=condition=Ready=True --all --timeout=2s &>/dev/null; then
         log info "Nodes are available and ready, skipping wait for nodes"
         return
     fi
 
     # Wait for all nodes to be 'Ready=False'
-    until kubectl wait nodes --for=condition=Ready=False --all --timeout=10s &>/dev/null; do
+    nodes_count=$(talosctl config info --output json 2>/dev/null | jq --exit-status --raw-output '.nodes[]' | wc -l)
+    until [ "$(kubectl wait nodes --for=condition=Ready=False --all --timeout=10s 2> /dev/null | wc -l)" = "${nodes_count}" ]; do
         log info "Nodes are not available, waiting for nodes to be available. Retrying in 10 seconds..."
         sleep 10
+    done
+
+    # Wait for system pods
+    for system_pod in kube-apiserver kube-controller-manager kube-scheduler; do
+      until [ "$(kubectl -n kube-system wait pods --for=condition=Ready -l "app.kubernetes.io/name=${system_pod}" --all --timeout=10s 2> /dev/null | wc -l)" -ge 3 ]; do
+            log info "System pods are not available, waiting for nodes to be available. Retrying in 10 seconds..."
+            sleep 10
+        done
     done
 }
 
@@ -211,15 +220,15 @@ function main() {
     fi
 
     # Bootstrap the Talos node configuration
-    # apply_talos_config
-    # bootstrap_talos
+    apply_talos_config
+    bootstrap_talos
     fetch_kubeconfig
     #
     # # Apply resources and Helm releases
-    # wait_for_nodes
-    # wipe_rook_disks
-    # apply_crds
-    # apply_resources
+    wait_for_nodes
+    wipe_rook_disks
+    apply_crds
+    apply_resources
     apply_helm_releases
 
     log info "Congrats! The cluster is bootstrapped and Flux is syncing the Git repository"
