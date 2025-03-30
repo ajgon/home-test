@@ -1,11 +1,11 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/chart.json
 apiVersion: v2
-name: cilium
+name: coredns
 version: 1.0.0
 type: application
 dependencies:
-  - name: cilium
-    version: 1.17.2
-    repository: oci://ghcr.io/home-operations/charts-mirror
+  - name: coredns
+    version: 1.39.2
+    repository: oci://ghcr.io/coredns/charts
     alias: parent
