@@ -1,4 +1,3 @@
-# {{ if false }}
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: "cilium.io/v2"
@@ -42,4 +41,3 @@ specs:
             rules:
               dns:
                 - matchPattern: "*"
-# {{ end }}

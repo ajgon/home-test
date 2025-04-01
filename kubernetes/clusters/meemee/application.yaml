@@ -13,7 +13,3 @@ spec:
     repoURL: https://github.com/ajgon/home-test.git
     targetRevision: master
     path: kubernetes/clusters/meemee
-    helm:
-      values: |
-        apps:
-          - spegel

@@ -11,18 +11,22 @@ releases:
   - name: cilium
     namespace: kube-system
     atomic: true
-    chart: oci://ghcr.io/home-operations/charts-mirror/cilium
-    version: 1.17.2
+    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/cilium'
     values:
-      - '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/cilium/values.yaml'
-
-      # meeme is ran on VMs, native routing will fail miserably,
+      # meemee is ran on VMs, native routing will fail miserably,
       # so let cilium tunnel everything
-      - ipv4NativeRoutingCIDR: ""
-        autoDirectNodeRoutes: false
-        routingMode: tunnel
-        enableIPv4BIGTCP: false
-        tunnelProtocol: geneve
+      - cilium:
+          autoDirectNodeRoutes: false
+          bgpControlPlane:
+            enabled: false
+          cluster:
+            name: meemee
+          enableIPv4BIGTCP: false
+          ipv4NativeRoutingCIDR: ""
+          routingMode: tunnel
+          tunnelProtocol: geneve
+        pools:
+          - 10.100.31.0/24
     hooks:
       # Wait for cilium CRDs to be available
       - events: ['postsync']
@@ -34,16 +38,6 @@ releases:
             ciliumloadbalancerippools.cilium.io ciliumclusterwidenetworkpolicies.cilium.io &>/dev/null;
             do sleep 10; done
         showlogs: true
-      # Apply cilium network configuration
-      # - events: ['postsync']
-      #   command: kubectl
-      #   args:
-      #     - apply
-      #     - --namespace=kube-system
-      #     - --server-side
-      #     - --field-manager=kustomize-controller
-      #     - --filename={{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/cilium/app/networks.yaml
-      #   showlogs: true
 
   - name: coredns
     namespace: kube-system
@@ -57,10 +51,10 @@ releases:
     chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/spegel'
     needs: ['kube-system/coredns']
 
-  - name: argocd
-    namespace: argocd
-    atomic: true
-    chart: oci://ghcr.io/argoproj/argo-helm/argo-cd
-    version: 7.8.15
-    values: ['{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/argocd/argocd/values.yaml']
-    needs: ['kube-system/spegel']
+  # - name: argocd
+  #   namespace: argocd
+  #   atomic: true
+  #   chart: oci://ghcr.io/argoproj/argo-helm/argo-cd
+  #   version: 7.8.15
+  #   values: ['{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/argocd/argocd/values.yaml']
+  #   needs: ['kube-system/spegel']

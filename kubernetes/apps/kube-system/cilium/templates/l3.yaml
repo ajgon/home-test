@@ -1,3 +1,4 @@
+# {{ if .Values.bgpControlPlane.enabled }}
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgppeeringpolicy_v2alpha1.json
 apiVersion: cilium.io/v2alpha1
@@ -15,5 +16,6 @@ spec:
             values:
               - ignore
       neighbors:
-        - peerAddress: "<path:kubernetes/data/internal/base#IP_ROUTER>/32"
+        - peerAddress: "{{ .Values.bgpRouterIP }}"
           peerASN: 64512
+# {{ end }}

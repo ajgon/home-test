@@ -1,3 +1,4 @@
+# {{ if .Values.l2announcements.enabled }}
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliuml2announcementpolicy_v2alpha1.json
 apiVersion: cilium.io/v2alpha1
@@ -9,3 +10,4 @@ spec:
   nodeSelector:
     matchLabels:
       kubernetes.io/os: linux
+# {{ end }}

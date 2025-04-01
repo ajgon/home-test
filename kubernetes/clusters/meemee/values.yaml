@@ -1,10 +1,43 @@
 ---
 applications:
+  cilium:
+    namespace: kube-system
+    path: kubernetes/apps/kube-system/cilium
+    psp: privileged
+    ignoreDifferences: |
+      - kind: Secret
+        group: ""
+        name: cilium-ca
+        jsonPointers:
+          - "/data"
+      - kind: Secret
+        group: ""
+        name: hubble-relay-client-certs
+        jsonPointers:
+          - "/data"
+      - kind: Secret
+        group: ""
+        name: hubble-server-certs
+        jsonPointers:
+          - "/data"
+    helmValues: |
+      cilium:
+        autoDirectNodeRoutes: false
+        bgpControlPlane:
+          enabled: false
+        cluster:
+          name: meemee
+        enableIPv4BIGTCP: false
+        ipv4NativeRoutingCIDR: ""
+        routingMode: tunnel
+        tunnelProtocol: geneve
+      pools:
+        - 10.100.31.0/24
+  coredns:
+    namespace: kube-system
+    path: kubernetes/apps/kube-system/coredns
+    psp: privileged
   spegel:
-    - name: coredns
-      namespace: kube-system
-      path: kubernetes/apps/kube-system/coredns
-    - name: spegel
-      namespace: kube-system
-      path: kubernetes/apps/kube-system/spegel
-      psp: privileged
+    namespace: kube-system
+    path: kubernetes/apps/kube-system/spegel
+    psp: privileged

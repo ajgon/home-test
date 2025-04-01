@@ -1,4 +1,5 @@
 ---
+autoDirectNodeRoutes: true
 bandwidthManager:
   enabled: true
   bbr: true
@@ -6,8 +7,7 @@ bpf:
   datapathMode: netkit
   masquerade: true
   preallocateMaps: true
-# bpf:
-#   masquerade: false
+bpfClockProbe: true
 bgpControlPlane:
   enabled: true
 cgroup:
@@ -20,9 +20,9 @@ cluster:
 cni:
   exclusive: false  # for multus
 dashboards:
-  enabled: false
-devices: enp+
-# enableRuntimeDeviceDetection: true
+  enabled: false  # @todo
+enableRuntimeDeviceDetection: true
+enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
 envoy:
@@ -31,6 +31,7 @@ hubble:
   enabled: false
 ipam:
   mode: kubernetes
+ipv4NativeRoutingCIDR: 172.30.0.0/16
 k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
 kubeProxyReplacement: true
@@ -39,7 +40,7 @@ l2announcements:
   enabled: true
 loadBalancer:
   algorithm: maglev
-  mode: snat # vm
+  mode: dsr
 localRedirectPolicy: true
 operator:
   enabled: true
@@ -57,6 +58,7 @@ prometheus:
     enabled: true
     trustCRDsExist: true
 rollOutCiliumPods: true
+routingMode: native
 securityContext:
   capabilities:
     ciliumAgent:
@@ -77,11 +79,3 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
-
-
-
-# ipv4NativeRoutingCIDR: 172.30.0.0/16
-autoDirectNodeRoutes: false
-routingMode: tunnel
-enableIPv4BIGTCP: false
-tunnelProtocol: geneve

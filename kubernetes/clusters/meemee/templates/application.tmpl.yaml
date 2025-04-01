@@ -1,29 +1,34 @@
-{{ range $app, $applications := .Values.applications }}
-{{ if has $app $.Values.apps }}
-{{ range $application := $applications }}
+{{ range $appname, $applications := .Values.applications }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: '{{ $application.name }}'
+  name: '{{ $appname }}'
   namespace: argocd
 spec:
   destination:
     namespace: '{{ $application.namespace }}'
     server: https://kubernetes.default.svc
   project: default
-  source:
-    repoURL: 'https://github.com/ajgon/home-test.git'
-    targetRevision: 'master'
-    path: '{{ $application.path }}'
-    {{- if $application.helmValues }}
-    helm:
-      values: |
-        {{- tpl $application.helmValues $ | nindent 8 }}
-    {{- end }}
+  sources:
+    - repoURL: 'https://github.com/ajgon/home-test.git'
+      targetRevision: 'master'
+      path: '{{ $application.path }}'
+      {{- if $application.helmValues }}
+      helm:
+        values: |
+          {{- tpl $application.helmValues $ | nindent 10 }}
+      {{- end }}
   syncPolicy:
     automated:
       prune: true
+    syncOptions:
+      - CreateNamespace=true
+    {{- if $application.syncOptions }}
+    {{- range $syncOption := $application.syncOptions }}
+      - {{ $syncOption }}
+    {{- end}}
+    {{- end}}
     {{- if $application.psp }}
     managedNamespaceMetadata:
       labels:
@@ -31,6 +36,8 @@ spec:
         pod-security.kubernetes.io/audit: {{ $application.psp }}
         pod-security.kubernetes.io/warn: {{ $application.psp }}
     {{- end }}
-{{- end}}
-{{- end}}
+  {{- if $application.ignoreDifferences }}
+  ignoreDifferences:
+    {{- tpl $application.ignoreDifferences $ | nindent 4 }}
+  {{- end}}
 {{- end}}
