@@ -1,0 +1,16 @@
+---
+applications:
+  argo-cd:
+    namespace: argocd
+    path: kubernetes/apps/argocd/argo-cd
+    ignoreDifferences: |
+      - group: ""
+        kind: Secret
+        name: argocd-secret
+        jsonPointers:
+          - "/data"
+    helmValues: |
+      argo-cd:
+        server:
+          ingress:
+            hostname: argocd.meemee.dev

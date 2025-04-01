@@ -1,132 +1,134 @@
 ---
-global:
-  deploymentStrategy:
-    type: RollingUpdate
-  securityContext:
-    runAsNonRoot: true
-    runAsUser: 999
-    runAsGroup: 999
-    seccompProfile:
-      type: RuntimeDefault
-configs:
-  params:
-    # by default argocd handles SSL termination on its own, which breaks TLS termination on nginx,
-    # causing infinite loop
-    "server.insecure": true
-  # repositories:
-  #   deedee-ops-home-ops:
-  #     name: home-ops
-  #     type: git
-  #     url: https://github.com/deedee-ops/home-ops.git
-  cm:
-    # this customization make sync-waves work properly
-    resource.customizations: |
-      argoproj.io/Application:
-        health.lua: |
-          hs = {}
-          hs.status = "Progressing"
-          hs.message = ""
-          if obj.status ~= nil then
-            if obj.status.health ~= nil then
-              hs.status = obj.status.health.status
-              if obj.status.health.message ~= nil then
-                hs.message = obj.status.health.message
+argo-cd:
+  global:
+    deploymentStrategy:
+      type: RollingUpdate
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 999
+      runAsGroup: 999
+      seccompProfile:
+        type: RuntimeDefault
+  configs:
+    params:
+      # by default argocd handles SSL termination on its own, which breaks TLS termination on nginx,
+      # causing infinite loop
+      "server.insecure": true
+    repositories:
+      deedee-ops-home-ops:
+        name: home-ops
+        type: git
+        url: https://github.com/ajgon/home-test.git
+    cm:
+      # this customization make sync-waves work properly
+      resource.customizations: |
+        argoproj.io/Application:
+          health.lua: |
+            hs = {}
+            hs.status = "Progressing"
+            hs.message = ""
+            if obj.status ~= nil then
+              if obj.status.health ~= nil then
+                hs.status = obj.status.health.status
+                if obj.status.health.message ~= nil then
+                  hs.message = obj.status.health.message
+                end
               end
             end
-          end
-          return hs
-    resource.exclusions: |
-      # this customization asks argo to ignore CiliumIdentity resources
-      - apiGroups:
-        - cilium.io
-        kinds:
-        - CiliumIdentity
-        clusters:
-        - "*"
-      - apiGroups:
-        - actions.github.com
-        kinds:
-        - AutoscalingListener
-        clusters:
-        - "*"
-  cmp:
-    create: false
+            return hs
+      resource.exclusions: |
+        # this customization asks argo to ignore CiliumIdentity resources
+        - apiGroups:
+          - cilium.io
+          kinds:
+          - CiliumIdentity
+          clusters:
+          - "*"
+        - apiGroups:
+          - actions.github.com
+          kinds:
+          - AutoscalingListener
+          clusters:
+          - "*"
+    cmp:
+      create: false
 
-  rbac:
-    policy.csv: g, lldap_admin, role:admin
+    rbac:
+      policy.csv: g, lldap_admin, role:admin
 
-controller:
-  replicas: 2
-  containerSecurityContext:
-    runAsNonRoot: true
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
-    capabilities:
-      drop:
-        - ALL
-  metrics:
-    enabled: true
-    serviceMonitor:
+  controller:
+    replicas: 2
+    containerSecurityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+    metrics:
       enabled: true
+      serviceMonitor:
+        enabled: true
 
-dex:
-  enabled: false
-
-notifications:
-  enabled: false
-
-server:
-  replicas: 2
-  containerSecurityContext:
-    runAsNonRoot: true
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
-    capabilities:
-      drop:
-        - ALL
-  autoscaling:
+  dex:
     enabled: false
-  ingress:
+
+  notifications:
     enabled: false
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: true
 
-repoServer:
-  replicas: 2
-  containerSecurityContext:
-    runAsNonRoot: true
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
-    capabilities:
-      drop:
-        - ALL
-  podLabels:
-    # for downloading helm charts from various sources
-    egress/enabled: "true"
-  autoscaling:
+  server:
+    replicas: 2
+    containerSecurityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+    autoscaling:
+      enabled: false
+    ingress:
+      enabled: true
+      ingressClassName: internal
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+  repoServer:
+    replicas: 2
+    containerSecurityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+    podLabels:
+      # for downloading helm charts from various sources
+      egress/enabled: "true"
+    autoscaling:
+      enabled: false
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+    serviceAccount:
+      automountServiceAccountToken: true
+
+  applicationSet:
     enabled: false
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-  serviceAccount:
-    automountServiceAccountToken: true
 
-applicationSet:
-  enabled: false
-
-redis:
-  enabled: true
-  containerSecurityContext:
-    runAsNonRoot: true
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
-    capabilities:
-      drop:
-        - ALL
-  metrics:
+  redis:
     enabled: true
-    serviceMonitor:
+    containerSecurityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+    metrics:
       enabled: true
+      serviceMonitor:
+        enabled: true

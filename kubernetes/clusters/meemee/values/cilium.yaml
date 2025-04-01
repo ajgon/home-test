@@ -22,22 +22,9 @@ applications:
           - "/data"
     helmValues: |
       cilium:
-        autoDirectNodeRoutes: false
-        bgpControlPlane:
-          enabled: false
         cluster:
           name: meemee
-        enableIPv4BIGTCP: false
-        ipv4NativeRoutingCIDR: ""
-        routingMode: tunnel
-        tunnelProtocol: geneve
+        l2announcements:
+          enabled: true
       pools:
         - 10.100.31.0/24
-  coredns:
-    namespace: kube-system
-    path: kubernetes/apps/kube-system/coredns
-    psp: privileged
-  spegel:
-    namespace: kube-system
-    path: kubernetes/apps/kube-system/spegel
-    psp: privileged

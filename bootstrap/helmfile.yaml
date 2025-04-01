@@ -41,3 +41,8 @@ releases:
     atomic: true
     chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/argocd/argo-cd'
     needs: ['kube-system/spegel']
+    values:
+      - argo-cd:
+          server:
+            ingress:
+              enabled: false

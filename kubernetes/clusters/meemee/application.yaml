@@ -13,3 +13,14 @@ spec:
     repoURL: https://github.com/ajgon/home-test.git
     targetRevision: master
     path: kubernetes/clusters/meemee
+    helm:
+      valueFiles:
+        - values/argo-cd.yaml
+        - values/cilium.yaml
+        - values/coredns.yaml
+        - values/spegel.yaml
+  ignoreDifferences:
+    - group: "argoproj.io"
+      kind: Application
+      jsonPointers:
+        - "/spec/ignoreDifferences"
