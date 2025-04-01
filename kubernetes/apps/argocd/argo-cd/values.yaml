@@ -1,6 +1,6 @@
 ---
 argo-cd:
-  nameOverride: argocd
+  nameOverride: argo-cd
   global:
     deploymentStrategy:
       type: RollingUpdate
