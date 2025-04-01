@@ -1,10 +1,10 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/chart.json
 apiVersion: v2
-name: cilium
+name: argo-cd
 version: 1.0.0
 type: application
 dependencies:
-  - name: cilium
-    version: 1.17.2
-    repository: oci://ghcr.io/home-operations/charts-mirror
+  - name: argo-cd
+    version: 7.8.15
+    repository: oci://ghcr.io/argoproj/argo-helm

@@ -113,15 +113,6 @@ repoServer:
       enabled: true
   serviceAccount:
     automountServiceAccountToken: true
-  volumes:
-    - configMap:
-        name: argocd-cmp-cm
-      name: argocd-cmp-cm
-    - name: custom-tools
-      emptyDir: {}
-    - name: cache
-      emptyDir: {}
-
 
 applicationSet:
   enabled: false
