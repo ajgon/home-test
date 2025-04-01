@@ -1,4 +1,4 @@
-{{ range $appname, $applications := .Values.applications }}
+{{ range $appname, $application := .Values.applications }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
