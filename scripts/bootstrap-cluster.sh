@@ -228,7 +228,7 @@ function main() {
     # wait_for_nodes
     # wipe_rook_disks
     # apply_crds
-    # apply_resources
+    apply_resources
     apply_helm_releases
 
     log info "Congrats! The cluster is bootstrapped and ArgoCD is syncing the Git repository"

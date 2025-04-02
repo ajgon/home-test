@@ -13,3 +13,5 @@
 - https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.17.2/pkg/k8s/apis/cilium.io/client/crds/v2alpha1/ciliuml2announcementpolicies.yaml
 # renovate: datasource=github-releases depName=cilium/cilium
 - https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.17.2/pkg/k8s/apis/cilium.io/client/crds/v2alpha1/ciliumloadbalancerippools.yaml
+# renovate: datasource=github-releases depName=external-secrets/external-secrets
+- https://raw.githubusercontent.com/external-secrets/external-secrets/refs/tags/v0.15.1/config/crds/bases/external-secrets.io_clustersecretstores.yaml

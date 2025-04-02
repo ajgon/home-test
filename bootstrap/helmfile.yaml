@@ -21,7 +21,7 @@ releases:
           - >-
             until kubectl get crd ciliumbgppeeringpolicies.cilium.io ciliuml2announcementpolicies.cilium.io
             ciliumloadbalancerippools.cilium.io ciliumclusterwidenetworkpolicies.cilium.io &>/dev/null;
-            do sleep 10; done
+            do sleep 5; done
         showlogs: true
 
   - name: coredns
@@ -36,11 +36,17 @@ releases:
     chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/spegel'
     needs: ['kube-system/coredns']
 
-  - name: argocd
+  - name: external-secrets
+    namespace: external-secrets
+    atomic: true
+    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/external-secrets/external-secrets'
+    needs: ['kube-system/spegel']
+
+  - name: argo-cd
     namespace: argocd
     atomic: true
     chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/argocd/argo-cd'
-    needs: ['kube-system/spegel']
+    needs: ['external-secrets/external-secrets']
     values:
       - argo-cd:
           server:
