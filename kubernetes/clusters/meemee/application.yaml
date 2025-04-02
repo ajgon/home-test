@@ -18,6 +18,7 @@ spec:
         - values/argo-cd.yaml
         - values/cilium.yaml
         - values/coredns.yaml
+        - values/external-secrets.yaml
         - values/spegel.yaml
   ignoreDifferences:
     - group: "argoproj.io"
