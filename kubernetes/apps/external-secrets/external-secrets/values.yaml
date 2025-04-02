@@ -23,9 +23,6 @@ external-secrets:
 
   bitwarden-sdk-server:
     enabled: true
-    image:
-      tls:
-        enabled: false
     podSecurityContext:
       runAsUser: 65000
       runAsGroup: 65000
@@ -43,20 +40,3 @@ external-secrets:
 
 bitwarden-sdk-server:
   enabled: true
-  image:
-    tls:
-      enabled: false
-  podSecurityContext:
-    runAsUser: 65000
-    runAsGroup: 65000
-    fsGroup: 65000
-    seccompProfile:
-      type: RuntimeDefault
-
-  securityContext:
-    runAsNonRoot: true
-    readOnlyRootFilesystem: true
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-        - ALL
