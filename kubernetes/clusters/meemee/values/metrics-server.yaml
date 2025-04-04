@@ -1,0 +1,5 @@
+---
+applications:
+  coredns:
+    namespace: kube-system
+    path: kubernetes/apps/kube-system/metrics-server

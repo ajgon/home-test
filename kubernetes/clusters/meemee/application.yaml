@@ -18,6 +18,7 @@ spec:
         - values/argo-cd.yaml
         - values/cilium.yaml
         - values/coredns.yaml
+        - values/metrics-server.yaml
         - values/external-secrets.yaml
         # waiting for: https://github.com/sigstore/policy-controller/pull/1725
         # - values/policy-controller.yaml
