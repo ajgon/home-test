@@ -38,7 +38,6 @@ argo-cd:
             end
             return hs
       resource.exclusions: |
-        # this customization asks argo to ignore CiliumIdentity resources
         - apiGroups:
           - cilium.io
           kinds:
@@ -51,21 +50,12 @@ argo-cd:
           - AutoscalingListener
           clusters:
           - "*"
-    cmp:
-      create: false
 
     rbac:
       policy.csv: g, lldap_admin, role:admin
 
   controller:
     replicas: 2
-    containerSecurityContext:
-      runAsNonRoot: true
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-      capabilities:
-        drop:
-          - ALL
     metrics:
       enabled: true
       serviceMonitor:
@@ -79,15 +69,6 @@ argo-cd:
 
   server:
     replicas: 2
-    containerSecurityContext:
-      runAsNonRoot: true
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-      capabilities:
-        drop:
-          - ALL
-    autoscaling:
-      enabled: false
     ingress:
       enabled: true
       ingressClassName: internal
@@ -98,37 +79,23 @@ argo-cd:
 
   repoServer:
     replicas: 2
-    containerSecurityContext:
-      runAsNonRoot: true
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-      capabilities:
-        drop:
-          - ALL
     podLabels:
       # for downloading helm charts from various sources
       egress/enabled: "true"
-    autoscaling:
-      enabled: false
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
-    serviceAccount:
-      automountServiceAccountToken: true
 
   applicationSet:
-    enabled: false
+    replicas: 2
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
 
   redis:
     enabled: true
-    containerSecurityContext:
-      runAsNonRoot: true
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-      capabilities:
-        drop:
-          - ALL
     exporter:
       enabled: true
     metrics:
