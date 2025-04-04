@@ -94,6 +94,7 @@
             pkgs.kubectl-node-shell
             pkgs.kustomize
             pkgs.minijinja
+            pkgs.popeye
             pkgs.talosctl
             pkgs.yq-go
 

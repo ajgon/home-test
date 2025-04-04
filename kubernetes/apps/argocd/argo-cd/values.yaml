@@ -129,6 +129,8 @@ argo-cd:
       capabilities:
         drop:
           - ALL
+    exporter:
+      enabled: true
     metrics:
       enabled: true
       serviceMonitor:
