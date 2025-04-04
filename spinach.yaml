@@ -32,6 +32,7 @@ popeye:
             codes: [102, 103]
           # no liveness probes set in chart
           - fqns:
+              - "rx:^argocd/argo-cd-application-controller-"
               - "rx:^kube-system/spegel-"
             codes: [103]
       serviceaccounts:

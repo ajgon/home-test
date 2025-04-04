@@ -100,14 +100,18 @@ argo-cd:
 
   redis:
     enabled: true
+    serviceAccount:
+      create: true
     livenessProbe:
       enabled: true
     readinessProbe:
       enabled: true
-    serviceAccount:
-      create: true
     exporter:
       enabled: true
+      livenessProbe:
+        enabled: true
+      readinessProbe:
+        enabled: true
     metrics:
       enabled: true
       serviceMonitor:
