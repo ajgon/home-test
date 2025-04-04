@@ -1,0 +1,8 @@
+---
+popeye:
+  excludes:
+    global:
+      codes:
+        - "106"
+        - "107"
+        - "1204"
