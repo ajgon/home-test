@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://deedee-ops.github.io/schemas/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: policy-controller
+specs:
+  - endpointSelector:
+      matchLabels:
+        app.kubernetes.io/name: policy-controller
+    egress:
+      - toPorts:
+          - ports:
+              - port: "53"
+                protocol: ANY
+            rules:
+              dns:
+                - matchPattern: "*"
+      - toFQDNs:
+          - matchName: "tuf-repo-cdn.sigstore.dev"

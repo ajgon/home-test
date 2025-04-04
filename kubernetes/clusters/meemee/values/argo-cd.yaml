@@ -3,6 +3,7 @@ applications:
   argo-cd:
     namespace: argocd
     path: kubernetes/apps/argocd/argo-cd
+    psp: restricted
     ignoreDifferences: |
       - group: ""
         kind: Secret

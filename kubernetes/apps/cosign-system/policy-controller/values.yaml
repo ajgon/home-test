@@ -1,0 +1,8 @@
+---
+policy-controller:
+  webhook:
+    securityContext:
+      enabled: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault

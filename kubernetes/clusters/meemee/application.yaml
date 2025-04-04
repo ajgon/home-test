@@ -19,6 +19,8 @@ spec:
         - values/cilium.yaml
         - values/coredns.yaml
         - values/external-secrets.yaml
+        # waiting for: https://github.com/sigstore/policy-controller/pull/1725
+        # - values/policy-controller.yaml
         - values/spegel.yaml
   ignoreDifferences:
     - group: "argoproj.io"

@@ -1,0 +1,6 @@
+---
+applications:
+  policy-controller:
+    namespace: cosign-system
+    path: kubernetes/apps/cosign-system/policy-controller
+    psp: restricted
