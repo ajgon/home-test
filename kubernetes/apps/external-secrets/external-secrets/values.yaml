@@ -6,12 +6,14 @@ external-secrets:
   image:
     repository: ghcr.io/external-secrets/external-secrets
   webhook:
+    replicaCount: 2
     image:
       repository: ghcr.io/external-secrets/external-secrets
     serviceMonitor:
       enabled: true
       interval: 1m
   certController:
+    replicaCount: 2
     image:
       repository: ghcr.io/external-secrets/external-secrets
     serviceMonitor:
