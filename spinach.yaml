@@ -51,3 +51,4 @@ popeye:
     - mirror.gcr.io
     - public.ecr.aws
     - quay.io
+    - registry.k8s.io
