@@ -3,12 +3,15 @@ popeye:
   excludes:
     global:
       codes:
-        - "102"
-        - "103"
         - "106"
         - "107"
+
+        # cilium is managing network policies, which is not detected by popeye
         - "1204"
     linters:
+      ciliumidentities:
+        instances:
+          - fqns: ["rx:.*"]
       pods:
         instances:
           # system kube pods, should be excluded from all lints
@@ -17,13 +20,33 @@ popeye:
           # https://github.com/spegel-org/spegel/issues/662
           - fqns: ["rx:^kube-system/(?:cilium-|spegel-)"]
             codes: [302, 306]
-          # argocd and cilium are expected to automount APIServer credentials
+          # these pods are expected to automount APIServer credentials
           - fqns:
               - "rx:^argocd/"
+              - "rx:^external-secrets/external-secrets-"
               - "rx:^kube-system/cilium-"
             codes: [301]
+          # no probes set in chart
+          - fqns:
+              - "rx:^external-secrets/external-secrets-"
+            codes: [102, 103]
+          # no liveness probes set in chart
+          - fqns:
+              - "rx:^kube-system/spegel-"
+            codes: [103]
       serviceaccounts:
         instances:
           # argocd is expected to automount APIServer credentials
           - fqns: ["rx:^argocd/"]
             codes: [303]
+      services:
+        instances:
+          # these services doesn't need multiple replicas
+          - fqns: ["rx:^argocd/argo-cd-redis"]
+            codes: [1109]
+
+  registries:
+    - ghcr.io
+    - mirror.gcr.io
+    - public.ecr.aws
+    - quay.io

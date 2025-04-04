@@ -89,6 +89,10 @@ argo-cd:
 
   applicationSet:
     replicas: 2
+    livenessProbe:
+      enabled: true
+    readinessProbe:
+      enabled: true
     metrics:
       enabled: true
       serviceMonitor:
@@ -96,6 +100,10 @@ argo-cd:
 
   redis:
     enabled: true
+    livenessProbe:
+      enabled: true
+    readinessProbe:
+      enabled: true
     serviceAccount:
       create: true
     exporter:
