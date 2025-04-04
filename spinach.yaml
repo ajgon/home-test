@@ -3,6 +3,27 @@ popeye:
   excludes:
     global:
       codes:
+        - "102"
+        - "103"
         - "106"
         - "107"
         - "1204"
+    linters:
+      pods:
+        instances:
+          # system kube pods, should be excluded from all lints
+          - fqns: ["rx:^kube-system/kube-(?:apiserver|controller-manager|scheduler)-"]
+          # cilium and spegel pods are expected to be ran as root
+          # https://github.com/spegel-org/spegel/issues/662
+          - fqns: ["rx:^kube-system/(?:cilium-|spegel-)"]
+            codes: [302, 306]
+          # argocd and cilium are expected to automount APIServer credentials
+          - fqns:
+              - "rx:^argocd/"
+              - "rx:^kube-system/cilium-"
+            codes: [301]
+      serviceaccounts:
+        instances:
+          # argocd is expected to automount APIServer credentials
+          - fqns: ["rx:^argocd/"]
+            codes: [303]

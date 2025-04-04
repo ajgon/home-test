@@ -96,6 +96,8 @@ argo-cd:
 
   redis:
     enabled: true
+    serviceAccount:
+      create: true
     exporter:
       enabled: true
     metrics:
