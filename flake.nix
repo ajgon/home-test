@@ -90,7 +90,6 @@
             pkgs.helmfile
             pkgs.jq
             pkgs.k9s
-            pkgs.kubeconform
             pkgs.kubectl
             pkgs.kubectl-node-shell
             pkgs.kustomize
