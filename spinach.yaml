@@ -3,8 +3,10 @@ popeye:
   excludes:
     global:
       codes:
-        # temporary disabled, resources
-        - "107"
+        # unpredictable metrics
+        - "109"
+        - "110"
+        - "503"
         - "505"
 
         # cilium is managing network policies, which is not detected by popeye
@@ -17,12 +19,12 @@ popeye:
         instances:
           # init containers
           - fqns: ["rx:^kube-system/cilium$"]
-            codes: [106]
+            codes: [106, 107]
       pods:
         instances:
           # init containers
           - fqns: ["rx:^kube-system/cilium-"]
-            codes: [106]
+            codes: [106, 107]
           # system kube pods, should be excluded from all lints
           - fqns: ["rx:^kube-system/kube-(?:apiserver|controller-manager|scheduler)-"]
           # cilium and spegel pods are expected to be ran as root
