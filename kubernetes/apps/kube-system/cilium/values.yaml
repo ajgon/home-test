@@ -99,6 +99,7 @@ cilium:
         - SYS_ADMIN
         - SYS_RESOURCE
   tls:
+    readSecretsOnlyFromSecretsNamespace: false
     secretsNamespace:
       create: false
     secretSync:
