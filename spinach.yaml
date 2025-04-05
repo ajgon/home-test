@@ -20,6 +20,9 @@ popeye:
             codes: [106]
       pods:
         instances:
+          # init containers
+          - fqns: ["rx:^kube-system/cilium-"]
+            codes: [106]
           # system kube pods, should be excluded from all lints
           - fqns: ["rx:^kube-system/kube-(?:apiserver|controller-manager|scheduler)-"]
           # cilium and spegel pods are expected to be ran as root
