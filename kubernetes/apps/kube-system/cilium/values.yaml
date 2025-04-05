@@ -101,4 +101,6 @@ cilium:
   tls:
     secretsNamespace:
       create: false
+    secretSync:
+      enabled: false
   tunnelProtocol: geneve
