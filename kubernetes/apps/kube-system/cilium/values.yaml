@@ -98,7 +98,7 @@ cilium:
         - NET_ADMIN
         - SYS_ADMIN
         - SYS_RESOURCE
-  tls:
+  tls:  # this whole section is set only to remove `cilium-secrets` namespace
     readSecretsOnlyFromSecretsNamespace: false
     secretsNamespace:
       create: false
