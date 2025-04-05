@@ -3,8 +3,9 @@ popeye:
   excludes:
     global:
       codes:
-        - "106"
+        # temporary disabled, resources
         - "107"
+        - "505"
 
         # cilium is managing network policies, which is not detected by popeye
         - "1204"

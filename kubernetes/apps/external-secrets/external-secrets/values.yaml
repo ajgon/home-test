@@ -1,17 +1,5 @@
 ---
 external-secrets:
-  installCRDs: true
-  replicaCount: 2
-  leaderElect: true
-  image:
-    repository: ghcr.io/external-secrets/external-secrets
-  webhook:
-    replicaCount: 2
-    image:
-      repository: ghcr.io/external-secrets/external-secrets
-    serviceMonitor:
-      enabled: true
-      interval: 1m
   certController:
     replicaCount: 2
     image:
@@ -19,20 +7,44 @@ external-secrets:
     serviceMonitor:
       enabled: true
       interval: 1m
+  image:
+    repository: ghcr.io/external-secrets/external-secrets
+  installCRDs: true
+  leaderElect: true
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      memory: "1Gi"
   serviceMonitor:
     enabled: true
     interval: 1m
+  webhook:
+    replicaCount: 2
+    image:
+      repository: ghcr.io/external-secrets/external-secrets
+    serviceMonitor:
+      enabled: true
+      interval: 1m
 
   bitwarden-sdk-server:
     enabled: true
-    replicaCount: 2
+
     podSecurityContext:
       runAsUser: 65000
       runAsGroup: 65000
       fsGroup: 65000
       seccompProfile:
         type: RuntimeDefault
-
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "32Mi"
+      limits:
+        memory: "1Gi"
     securityContext:
       runAsNonRoot: true
       readOnlyRootFilesystem: true

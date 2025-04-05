@@ -4,13 +4,13 @@ cilium:
   bandwidthManager:
     enabled: true
     bbr: true
+  bgpControlPlane:
+    enabled: false
   bpf:
     datapathMode: netkit
     masquerade: true
     preallocateMaps: true
   bpfClockProbe: true
-  bgpControlPlane:
-    enabled: false
   cgroup:
     autoMount:
       enabled: false
@@ -22,12 +22,18 @@ cilium:
     exclusive: false  # for multus
   dashboards:
     enabled: false  # @todo
-  enableRuntimeDeviceDetection: true
   enableIPv4BIGTCP: false
+  enableRuntimeDeviceDetection: true
   endpointRoutes:
     enabled: true
   envoy:
     rollOutPods: true
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "32Mi"
+      limits:
+        memory: "1Gi"
   hubble:
     enabled: false
   ipam:
@@ -52,12 +58,24 @@ cilium:
       serviceMonitor:
         enabled: true
     replicas: 2
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "64Mi"
+      limits:
+        memory: "1Gi"
     rollOutPods: true
   prometheus:
     enabled: true
     serviceMonitor:
       enabled: true
       trustCRDsExist: true
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      memory: "2Gi"
   rollOutCiliumPods: true
   routingMode: tunnel
   securityContext:

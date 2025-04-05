@@ -9,3 +9,4 @@ rules:
 
 ignore:
   - "*.tmpl.y*ml"
+  - "**/charts/**/*.y*ml"

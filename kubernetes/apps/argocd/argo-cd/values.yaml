@@ -1,15 +1,21 @@
 ---
 argo-cd:
-  nameOverride: argo-cd
-  global:
-    deploymentStrategy:
-      type: RollingUpdate
-    securityContext:
-      runAsNonRoot: true
-      runAsUser: 999
-      runAsGroup: 999
-      seccompProfile:
-        type: RuntimeDefault
+  applicationSet:
+    replicas: 2
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "32Mi"
+      limits:
+        memory: "1Gi"
+    livenessProbe:
+      enabled: true
+    readinessProbe:
+      enabled: true
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
   configs:
     params:
       # by default argocd handles SSL termination on its own, which breaks TLS termination on nginx,
@@ -50,54 +56,34 @@ argo-cd:
           - AutoscalingListener
           clusters:
           - "*"
-
     rbac:
       policy.csv: g, lldap_admin, role:admin
-
   controller:
     replicas: 2
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "256Mi"
+      limits:
+        memory: "4Gi"
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
-
   dex:
     enabled: false
-
+  global:
+    deploymentStrategy:
+      type: RollingUpdate
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 999
+      runAsGroup: 999
+      seccompProfile:
+        type: RuntimeDefault
+  nameOverride: argo-cd
   notifications:
     enabled: false
-
-  server:
-    replicas: 2
-    ingress:
-      enabled: true
-      ingressClassName: internal
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-
-  repoServer:
-    replicas: 2
-    podLabels:
-      # for downloading helm charts from various sources
-      egress/enabled: "true"
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-
-  applicationSet:
-    replicas: 2
-    livenessProbe:
-      enabled: true
-    readinessProbe:
-      enabled: true
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-
   redis:
     enabled: true
     serviceAccount:
@@ -106,12 +92,54 @@ argo-cd:
       enabled: true
     readinessProbe:
       enabled: true
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "32Mi"
+      limits:
+        memory: "1Gi"
     exporter:
       enabled: true
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "32Mi"
+        limits:
+          memory: "1Gi"
       livenessProbe:
         enabled: true
       readinessProbe:
         enabled: true
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  repoServer:
+    replicas: 2
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "64Mi"
+      limits:
+        memory: "1Gi"
+    podLabels:
+      # for downloading helm charts from various sources
+      egress/enabled: "true"
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  server:
+    replicas: 2
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "64Mi"
+      limits:
+        memory: "1Gi"
+    ingress:
+      enabled: true
+      ingressClassName: internal
     metrics:
       enabled: true
       serviceMonitor:

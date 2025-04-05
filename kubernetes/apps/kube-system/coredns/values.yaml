@@ -1,22 +1,24 @@
 ---
 coredns:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists
+  deployment:
+    annotations:
+      reloader.stakater.com/auto: "true"
   fullnameOverride: coredns
-  replicaCount: 2
-  k8sAppLabelOverride: kube-dns
   image:
     repository: mirror.gcr.io/coredns/coredns
+  k8sAppLabelOverride: kube-dns
+  replicaCount: 2
   securityContext:
     runAsNonRoot: true
     runAsUser: 65532
     runAsGroup: 65532
-  service:
-    name: kube-dns
-    clusterIP: 172.31.0.10
-  serviceAccount:
-    create: true
-  deployment:
-    annotations:
-      reloader.stakater.com/auto: "true"
   servers:
     - zones:
         - zone: .
@@ -46,13 +48,11 @@ coredns:
         - name: loop
         - name: reload
         - name: loadbalance
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: node-role.kubernetes.io/control-plane
-                operator: Exists
+  service:
+    name: kube-dns
+    clusterIP: 172.31.0.10
+  serviceAccount:
+    create: true
   tolerations:
     - key: CriticalAddonsOnly
       operator: Exists
