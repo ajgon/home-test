@@ -13,6 +13,11 @@ popeye:
       ciliumidentities:
         instances:
           - fqns: ["rx:.*"]
+      daemonsets:
+        instances:
+          # init containers
+          - fqns: ["rx:^kube-system/cilium$"]
+            codes: [106]
       pods:
         instances:
           # system kube pods, should be excluded from all lints

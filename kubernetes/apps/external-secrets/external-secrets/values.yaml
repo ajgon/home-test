@@ -1,9 +1,15 @@
 ---
 external-secrets:
   certController:
-    replicaCount: 2
     image:
       repository: ghcr.io/external-secrets/external-secrets
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "64Mi"
+      limits:
+        memory: "1Gi"
     serviceMonitor:
       enabled: true
       interval: 1m
@@ -22,9 +28,15 @@ external-secrets:
     enabled: true
     interval: 1m
   webhook:
-    replicaCount: 2
     image:
       repository: ghcr.io/external-secrets/external-secrets
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "64Mi"
+      limits:
+        memory: "1Gi"
     serviceMonitor:
       enabled: true
       interval: 1m
