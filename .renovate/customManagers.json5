@@ -24,10 +24,6 @@
         // # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
         // # yaml-language-server: $schema=https://www.talos.dev/v1.10/schemas/v1alpha1_config.schema.json
         'datasource=(?<datasource>\\S+) depName=(?<depName>[0-9a-zA-Z/.-]+)[",]*\\n[^\\n]+?/(?<currentValue>(v|\\d)[\\d.][^/]+)',
-
-        // "x-renovate": "datasource=github-releases depName=cilium/cilium",
-        // "$ref": "https://raw.githubusercontent.com/sigstore/helm-charts/refs/tags/policy-controller-0.10.0/charts/policy-controller/values.schema.json"
-        'datasource=(?<datasource>\\S+) depName=(?<depName>[0-9a-zA-Z/.-]+)[",]*\\n[^\\n]+?/tags/(?<currentValue>[^\\dv][^/]+)',
       ],
       datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
     },
