@@ -5,8 +5,8 @@ name: Lint everything
 'on':
   workflow_dispatch:
   pull_request:
-    branches-ignore:
-      - "renovate/*"
+    branches:
+      - "!renovate/*"
   push:
     branches:
       - "renovate/*"
@@ -15,7 +15,7 @@ jobs:
   lint:
     permissions:
       contents: write
-    runs-on: arc-runner-set-prod
+    runs-on: ubuntu-latest
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2
