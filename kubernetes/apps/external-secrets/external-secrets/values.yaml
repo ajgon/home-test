@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=../../../../schemas/values.json
 external-secrets:
   certController:
     image:

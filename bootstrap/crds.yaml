@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=../schemas/crds.json
 # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
 - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/experimental-install.yaml
 # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator

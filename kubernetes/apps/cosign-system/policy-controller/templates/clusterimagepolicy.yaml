@@ -1,4 +1,6 @@
 ---
+# yamllint disable-line rule:line-length
+# yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/policy.sigstore.dev/clusterimagepolicy_v1alpha1.json
 apiVersion: policy.sigstore.dev/v1alpha1
 kind: ClusterImagePolicy
 metadata:

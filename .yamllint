@@ -2,11 +2,17 @@
 extends: default
 
 rules:
+  comments-indentation:
+    ignore:
+      - "**/prometheus_rule.yaml"
   line-length:
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: true
     max: 120
 
 ignore:
+  - ".pre-commit-config.yaml"
   - "*.tmpl.y*ml"
   - "**/charts/**/*.y*ml"
+
+# vim:ft=yaml

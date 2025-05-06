@@ -108,11 +108,16 @@
           shellHook =
             self.checks.${system}.pre-commit-check.shellHook
             + ''
-              export BWS_ACCESS_TOKEN="$(${pkgs.lib.getExe pkgs.rbw} get BWS_ACCESS_TOKEN)"
               export ROOT_DIR="$(git rev-parse --show-toplevel)"
               source .env
 
-              bws secret list | jq -r '.[] | select(.key == "TALCONFIG_TALOSCONFIG") | .value' > "$ROOT_DIR/talosconfig"
+              if [[ ! -e "$ROOT_DIR/.current-cluster" || ! -s "$ROOT_DIR/.current-cluster" ]]; then
+                echo "MISSING '.current-cluster' file, some features may not work properly."
+              else
+                local current_cluster="$(cat "$ROOT_DIR/.current-cluster")"
+                export BWS_ACCESS_TOKEN="$(${pkgs.lib.getExe pkgs.rbw} get "BWS_ACCESS_TOKEN_''${current_cluster^^}")"
+                bws secret list | jq -r '.[] | select(.key == "TALCONFIG_TALOSCONFIG") | .value' > "$ROOT_DIR/talosconfig"
+              fi
             '';
         };
       }

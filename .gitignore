@@ -1,3 +1,4 @@
+.current-cluster
 .direnv
 .pre-commit-config.yaml
 kubeconfig

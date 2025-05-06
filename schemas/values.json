@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "homelab-values",
+  "type": "object",
+  "properties": {
+    "cilium": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-renovate": "datasource=github-tags depName=cilium/cilium",
+      "$ref": "https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.17.2/install/kubernetes/cilium/values.schema.json"
+    },
+    "external-secrets": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-renovate": "datasource=github-tags depName=external-secrets/external-secrets",
+      "$ref": "https://raw.githubusercontent.com/external-secrets/external-secrets/refs/tags/v0.16.1/deploy/charts/external-secrets/values.schema.json"
+    },
+    "policy-controller": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-renovate": "datasource=github-tags depName=sigstore/helm-charts",
+      "$ref": "https://raw.githubusercontent.com/sigstore/helm-charts/refs/tags/policy-controller-0.10.1/charts/policy-controller/values.schema.json"
+    }
+  }
+}

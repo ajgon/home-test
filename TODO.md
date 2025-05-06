@@ -9,3 +9,4 @@
 - schema urls
 - central renovate repository ( https://github.com/JJGadgets/Biohazard/blob/main/.github/workflows/renovate.yaml#L54-L62 )
 - popeye metrics and alerts
+- all logs in JSON format to be easily digested

@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=../../../../schemas/values.json
 policy-controller:
   webhook:
     securityContext:
