@@ -29,7 +29,6 @@
   },
   nix: {
     enabled: true,
-    managerFilePatterns: ["flake\\.nix$"],
   },
   lockFileMaintenance: {
     enabled: true,
