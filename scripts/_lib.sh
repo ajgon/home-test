@@ -118,4 +118,3 @@ function render_template() {
 
     echo "${output}"
 }
-

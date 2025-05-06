@@ -11,10 +11,11 @@ name: Lint everything
     branches:
       - "renovate/*"
 
+permissions:
+  contents: write
+
 jobs:
-  lint:
-    permissions:
-      contents: write
+  main:
     runs-on: ubuntu-latest
     steps:
       - name: Generate Token

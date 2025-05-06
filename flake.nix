@@ -57,24 +57,32 @@
           hooks = {
             actionlint.enable = true;
             check-json.enable = true;
+            commitizen.enable = true;
             markdownlint.enable = true;
             shellcheck = {
               enable = true;
               excludes = [ ".envrc" ];
             };
-            terraform-format.enable = true;
-            tflint.enable = true;
             yamllint.enable = true;
+            zizmor = {
+              enable = true;
+              name = "zizmor";
+              package = pkgs.zizmor;
+              entry = "${pkgs.lib.getExe pkgs.zizmor}";
+              files = ".github/workflows/.+\.yaml";
+            };
 
             check-case-conflicts.enable = true;
+            check-executables-have-shebangs.enable = true;
+            check-merge-conflicts.enable = true;
             check-shebang-scripts-are-executable.enable = true;
+            end-of-file-fixer.enable = true;
+            fix-byte-order-marker.enable = true;
             mixed-line-endings.enable = true;
+            trim-trailing-whitespace.enable = true;
 
             deadnix.enable = true;
-            flake-checker = {
-              enable = true;
-              package = pkgs.flake-checker;
-            };
+            flake-checker.enable = true;
             nixfmt-rfc-style = {
               enable = true;
               excludes = [ ".direnv" ];
