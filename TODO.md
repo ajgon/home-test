@@ -11,3 +11,4 @@
 - popeye metrics and alerts
 - all logs in JSON format to be easily digested
 - linter/validator that all `Chart.yaml` has OCI repositories
+- make robodexo app private again
