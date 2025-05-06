@@ -14,6 +14,7 @@
     ":timezone(Europe/Warsaw)",
     "github>ajgon/home-test//.renovate/autoMerge.json5",
     "github>ajgon/home-test//.renovate/customManagers.json5",
+    "github>ajgon/home-test//.renovate/groups.json5",
     "github>ajgon/home-test//.renovate/labels.json5",
     "github>ajgon/home-test//.renovate/semanticCommits.json5",
   ],
