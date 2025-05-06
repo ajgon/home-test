@@ -19,7 +19,7 @@
       "type": "object",
       "additionalProperties": false,
       "x-renovate": "datasource=github-releases depName=sigstore/policy-controller",
-      "$ref": "https://raw.githubusercontent.com/sigstore/helm-charts/refs/tags/policy-controller-0.10.1/charts/policy-controller/values.schema.json"
+      "$ref": "https://raw.githubusercontent.com/sigstore/helm-charts/refs/tags/policy-controller-0.10.0/charts/policy-controller/values.schema.json"
     }
   }
 }
