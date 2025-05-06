@@ -7,4 +7,4 @@ type: application
 dependencies:
   - name: policy-controller
     version: 0.10.1
-    repository: https://sigstore.github.io/helm-charts
+    repository: oci://ghcr.io/sigstore/helm-charts

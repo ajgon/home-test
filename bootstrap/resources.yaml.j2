@@ -1,5 +1,6 @@
+# yamllint disable rule:line-length
 ---
-# yamllint disable-line rule:line-length
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.4/namespace-v1.json
 apiVersion: v1
 kind: Namespace
@@ -11,7 +12,7 @@ metadata:
     pod-security.kubernetes.io/warn: privileged
 # waiting for: https://github.com/sigstore/policy-controller/pull/1725
 # ---
-# # yamllint disable-line rule:line-length
+# # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.4/namespace-v1.json
 # apiVersion: v1
 # kind: Namespace
@@ -22,7 +23,7 @@ metadata:
 #     pod-security.kubernetes.io/audit: restricted
 #     pod-security.kubernetes.io/warn: restricted
 ---
-# yamllint disable-line rule:line-length
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.4/namespace-v1.json
 apiVersion: v1
 kind: Namespace
@@ -33,7 +34,7 @@ metadata:
     pod-security.kubernetes.io/audit: restricted
     pod-security.kubernetes.io/warn: restricted
 ---
-# yamllint disable-line rule:line-length
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.4/secret-v1.json
 apiVersion: v1
 metadata:
@@ -44,3 +45,4 @@ type: Opaque
 stringData:
   token: "{{ ENV.BITWARDEN_SECRETSMANAGER_TOKEN }}"
 # vim:ft=yaml
+# yamllint enable rule:line-length
