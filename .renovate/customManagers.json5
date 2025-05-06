@@ -3,22 +3,7 @@
   customManagers: [
     {
       customType: "regex",
-      description: "Process annotated dependencies for images",
-      fileMatch: [
-        "(^|/).+\\.env$",
-        "(^|/).+\\.sh$",
-        "(^|/).+\\.ya?ml(?:\\.j2)?$",
-      ],
-      matchStrings: [
-        // # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-        // KUBERNETES_VERSION=v1.32.4
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+(:\\s|=)(&\\S+\\s)?(?<currentValue>\\S+)",
-      ],
-      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-    },
-    {
-      customType: "regex",
-      description: "Process annotated dependencies for URLs",
+      description: "Process annotated dependencies",
       fileMatch: [
         "(^|/).+\\.env$",
         "(^|/).+\\.sh$",
@@ -26,6 +11,9 @@
         "(^|/).+\\.ya?ml(?:\\.j2)?$",
       ],
       matchStrings: [
+        // # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+        // KUBERNETES_VERSION=v1.32.4
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+(:\\s|=)(&\\S+\\s)?(?<currentValue>\\S+)",
         // # renovate: datasource=docker depName=ghcr.io/prometheus-operator/prometheus-operator
         // https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.80.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
         //
