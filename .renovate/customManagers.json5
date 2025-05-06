@@ -17,7 +17,7 @@
         // # renovate: datasource=docker depName=ghcr.io/prometheus-operator/prometheus-operator
         // https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.80.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
         //
-        // "x-renovate": "datasource=github-tags depName=cilium/cilium",
+        // "x-renovate": "datasource=github-releases depName=cilium/cilium",
         // "$ref": "https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.17.2/install/kubernetes/cilium/values.schema.json"
         //
         // # renovate: datasource=docker depName=ghcr.io/siderolabs/installer

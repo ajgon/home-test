@@ -4,7 +4,7 @@
     {
       description: "Cilium Group",
       groupName: "Cilium",
-      matchDatasources: ["docker", "github-releases", "github-tags"],
+      matchDatasources: ["docker", "github-releases"],
       matchPackageNames: ["/cilium/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
@@ -22,7 +22,7 @@
     {
       description: "External Secrets Operator Group",
       groupName: "External Secrets Operator",
-      matchDatasources: ["docker", "github-releases", "github-tags"],
+      matchDatasources: ["docker", "github-releases"],
       matchPackageNames: ["/external-secrets/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
