@@ -7,7 +7,7 @@
 # renovate: datasource=github-releases depName=kubernetes-sigs/external-dns
 - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.16.1/docs/sources/crd/crd-manifest.yaml
 # renovate: datasource=github-releases depName=cilium/cilium
-- https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.17.2/pkg/k8s/apis/cilium.io/client/crds/v2/ciliumclusterwidenetworkpolicies.yaml
+- https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.17.3/pkg/k8s/apis/cilium.io/client/crds/v2/ciliumclusterwidenetworkpolicies.yaml
 # renovate: datasource=github-releases depName=cilium/cilium
 - https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.17.2/pkg/k8s/apis/cilium.io/client/crds/v2alpha1/ciliumbgppeeringpolicies.yaml
 # renovate: datasource=github-releases depName=cilium/cilium
