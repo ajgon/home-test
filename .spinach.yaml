@@ -1,7 +1,6 @@
 ---
-# yamllint disable rule:line-length
+# yamllint disable-line rule:line-length
 # yaml-language-server: $schema=https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/pkg/config/json/schemas/spinach.json
-# yamllint enable rule:line-length
 
 popeye:
   excludes:

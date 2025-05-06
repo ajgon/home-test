@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=../schemas/labels.json
 # Areas
 - name: area/bootstrap
   color: "0e8a16"
@@ -29,9 +30,9 @@
   color: "027fa0"
 # Semantic Types
 - name: type/digest
-  color: "ffeC19"
+  color: "ffec19"
 - name: type/patch
-  color: "ffeC19"
+  color: "ffec19"
 - name: type/minor
   color: "ff9800"
 - name: type/major
