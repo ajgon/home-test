@@ -49,3 +49,4 @@ jobs:
             ${{ secrets.BOT_USER_ID }}+${{ secrets.BOT_USERNAME }}[bot]@users.noreply.github.com
           author_name: "${{ secrets.BOT_USERNAME }}[bot]"
           branch: master
+          message: "chore(deps): lock file maintenance"
