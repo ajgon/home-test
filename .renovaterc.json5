@@ -27,11 +27,4 @@
   kubernetes: {
     managerFilePatterns: ["(^|/)kubernetes/.+\\.ya?ml$"],
   },
-  nix: {
-    enabled: true,
-  },
-  lockFileMaintenance: {
-    enabled: true,
-    automerge: true,
-  },
 }
