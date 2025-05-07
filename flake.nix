@@ -88,6 +88,16 @@
               excludes = [ ".direnv" ];
             };
             statix.enable = true;
+
+            # custom linters
+            lint-charts-for-oci = {
+              enable = true;
+              entry = "./scripts/lint-charts-for-oci.sh -q";
+            };
+            lint-yaml-language-server = {
+              enable = true;
+              entry = "./scripts/lint-yaml-language-server.sh";
+            };
           };
         };
 
