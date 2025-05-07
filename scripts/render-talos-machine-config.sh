@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck source=scripts/_lib.sh
 set -Eeuo pipefail
 
 # This script renders and merges Talos machine configurations.
@@ -15,6 +14,7 @@ set -Eeuo pipefail
 # Output:
 # The merged Talos configuration is printed to standard output.
 
+# shellcheck source=scripts/_lib.sh
 source "$(dirname "${0}")/_lib.sh"
 
 readonly NODE_BASE="${1:-}" NODE_PATCH="${2:-}"

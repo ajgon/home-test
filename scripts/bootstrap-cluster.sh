@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck source=scripts/_lib.sh
 set -Eeuo pipefail
 
+# shellcheck source=scripts/_lib.sh
 source "$(dirname "${0}")/_lib.sh"
 
 export LOG_LEVEL="${LOG_LEVEL:-debug}"

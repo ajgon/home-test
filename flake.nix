@@ -62,6 +62,7 @@
             shellcheck = {
               enable = true;
               excludes = [ ".envrc" ];
+              args = [ "-x" ];
             };
             yamllint.enable = true;
             zizmor = {

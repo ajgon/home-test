@@ -37,7 +37,7 @@ is_ignored() {
   shift 2
   local patterns=("$@")
 
-  local rel_path="${file#$base/}"  # Make path relative to base dir
+  local rel_path="${file#"$base"/}"  # Make path relative to base dir
 
   if ! check_extension "$file"; then
     echo 'wrong ext'
@@ -45,6 +45,7 @@ is_ignored() {
   fi
 
   for pat in "${patterns[@]}"; do
+    # shellcheck disable=SC2053
     if [[ "$rel_path" == $pat ]]; then
       return 0
     fi
