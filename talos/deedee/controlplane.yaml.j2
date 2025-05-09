@@ -16,7 +16,7 @@ machine:
 
   certSANs:
     - 127.0.0.1
-    - 10.42.20.1
+    - 10.42.20.10
 
   kubelet:
     image: "ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}"
@@ -39,18 +39,20 @@ machine:
       - deviceSelector:
           hardwareAddr: 48:21:0b:51:*
         dhcp: true
-        mtu: 9000
+        # mtu: 9000
         vip:
-          ip: 10.42.20.1
+          ip: 10.42.20.10
 
   install:
-    image: "ghcr.io/siderolabs/installer:{{ ENV.TALOS_VERSION }}"
+    # yamllint disable-line rule:line-length
+    image: "factory.rzegocki.dev/metal-installer-secureboot/0fc81843ca39d9043eb1b83a21567b2ab635c0f3125352551d36a7a4d2ef51f6:{{ ENV.TALOS_VERSION }}"
     wipe: false
 
     extraKernelArgs:
       - i915.enable_guc=3                    # Alder Lake CPU / iGPU, hw transcoding
       - intel_iommu=on                       # PCI Passthrough, hw transcoding
       - iommu=pt                             # PCI Passthrough, hw transcoding
+      - net.ifnames=0                        # Classic ethernet names
       - sysctl.kernel.kexec_load_disabled=1  # kexec makes SecureBoot pointless
       - talos.auditd.disabled=1              # Too much noise
 
@@ -128,7 +130,7 @@ cluster:
   id: "{{ ENV.TALCONFIG_CLUSTER_ID }}"
   secret: "{{ ENV.TALCONFIG_CLUSTER_SECRET }}"
   controlPlane:
-    endpoint: https://10.42.20.1:6443
+    endpoint: https://10.42.20.10:6443
   clusterName: deedee
   network:
     dnsDomain: cluster.local
@@ -153,7 +155,7 @@ cluster:
     image: "registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}"
     certSANs:
       - 127.0.0.1
-      - 10.42.20.1
+      - 10.42.20.10
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"

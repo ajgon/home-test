@@ -8,17 +8,14 @@ version: v1alpha1
 
 machine:
   network:
-    hostname: blossom
-    interfaces:
-      - addresses:
-          - 10.42.20.10/24
+    hostname: buttercup
 
   disks:
-    - device: /dev/disk/by-id/nvme-WD_Blue_SN570_500GB_22319R490212
+    - device: /dev/disk/by-id/nvme-WD_Blue_SN570_500GB_22319R470205
       partitions:
         - mountpoint: /var/mnt/extra
 
   install:
-    disk: /dev/disk/by-id/ata-TS128GMTS430S_H854360676
+    disk: /dev/disk/by-id/ata-TS128GMTS430S_H854361145
 
 # vim:ft=yaml
