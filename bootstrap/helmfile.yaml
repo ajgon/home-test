@@ -25,7 +25,7 @@ releases:
           tunnelProtocol: geneve
     hooks:
       # Wait for cilium CRDs to be available
-      - events: ['postsync']
+      - events: ["postsync"]
         command: bash
         args:
           - -c
@@ -39,13 +39,13 @@ releases:
     namespace: kube-system
     atomic: true
     chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/coredns'
-    needs: ['kube-system/cilium']
+    needs: ["kube-system/cilium"]
 
   - name: spegel
     namespace: kube-system
     atomic: true
     chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/spegel'
-    needs: ['kube-system/coredns']
+    needs: ["kube-system/coredns"]
 
   # # waiting for: https://github.com/sigstore/policy-controller/pull/1725
   # # - name: policy-controller
@@ -64,12 +64,25 @@ releases:
   # #           do sleep 5; done
   # #       showlogs: true
   #
-  # - name: external-secrets
-  #   namespace: external-secrets
-  #   atomic: true
-  #   chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/external-secrets/external-secrets'
-  #   needs: ['kube-system/spegel']
-  #   # needs: ['cosign-system/policy-controller']
+  - name: external-secrets
+    namespace: external-secrets
+    atomic: true
+    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/external-secrets/external-secrets'
+    needs: ["kube-system/spegel"]
+    # needs: ['cosign-system/policy-controller']
+    values:
+      - installSecretStore: false
+    hooks:
+      - events: ["postsync"]
+        command: bash
+        args:
+          - -c
+          - >-
+            sed 's@{{`{{ .Release.Namespace }}`}}@{{ .Release.Namespace }}@g'
+            ../kubernetes/apps/external-secrets/external-secrets/templates/clustersecretstore.yaml |
+            kubectl apply --namespace={{ .Release.Namespace }} --server-side --field-manager=kube-controller-manager
+            --filename - --wait=true
+        showlogs: true
   #
   # - name: argo-cd
   #   namespace: argocd
