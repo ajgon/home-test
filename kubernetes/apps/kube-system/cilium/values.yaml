@@ -24,11 +24,14 @@ cilium:
   dashboards:
     enabled: false  # @todo
   enableIPv4BIGTCP: false
-  enableRuntimeDeviceDetection: true
+  # enableRuntimeDeviceDetection: true
   endpointRoutes:
     enabled: true
   envoy:
     rollOutPods: true
+    prometheus:
+      serviceMonitor:
+        enabled: true
     resources:
       requests:
         cpu: "50m"
@@ -36,7 +39,29 @@ cilium:
       limits:
         memory: "1Gi"
   hubble:
-    enabled: false
+    enabled: true
+    metrics:
+      enabled:
+        - dns:query
+        - drop
+        - tcp
+        - flow
+        - port-distribution
+        - icmp
+        - http
+      # dashboards:  # @todo: grafana
+      #   enabled: true
+      serviceMonitor:
+        enabled: true
+    relay:
+      enabled: true
+      rollOutPods: true
+      prometheus:
+        serviceMonitor:
+          enabled: true
+    ui:
+      enabled: true
+      rollOutPods: true
   ipam:
     mode: kubernetes
   ipv4NativeRoutingCIDR: 172.30.0.0/16
@@ -48,7 +73,7 @@ cilium:
     enabled: true
   loadBalancer:
     algorithm: maglev
-    mode: snat
+    mode: dsr
   localRedirectPolicy: true
   operator:
     enabled: true
@@ -78,7 +103,7 @@ cilium:
     limits:
       memory: "2Gi"
   rollOutCiliumPods: true
-  routingMode: tunnel
+  routingMode: native
   securityContext:
     capabilities:
       ciliumAgent:
@@ -105,4 +130,4 @@ cilium:
       create: false
     secretSync:
       enabled: false
-  tunnelProtocol: geneve
+  tunnelProtocol: ""

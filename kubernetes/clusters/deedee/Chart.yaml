@@ -1,0 +1,5 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/chart.json
+apiVersion: v2
+name: deedee
+version: 1.0.0

@@ -11,6 +11,14 @@ releases:
     namespace: kube-system
     atomic: true
     chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/cilium'
+    values:
+      - cilium:
+          hubble:
+            enabled: false
+          loadBalancer:
+            mode: snat
+          routingMode: tunnel
+          tunnelProtocol: geneve
     hooks:
       # Wait for cilium CRDs to be available
       - events: ['postsync']
@@ -23,48 +31,49 @@ releases:
             do sleep 5; done
         showlogs: true
 
-  - name: coredns
-    namespace: kube-system
-    atomic: true
-    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/coredns'
-    needs: ['kube-system/cilium']
-
-  - name: spegel
-    namespace: kube-system
-    atomic: true
-    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/spegel'
-    needs: ['kube-system/coredns']
-
-  # waiting for: https://github.com/sigstore/policy-controller/pull/1725
-  # - name: policy-controller
-  #   namespace: cosign-system
+  # - name: coredns
+  #   namespace: kube-system
   #   atomic: true
-  #   chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/cosign-system/policy-controller'
+  #   chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/coredns'
+  #   needs: ['kube-system/cilium']
+  #
+  # - name: spegel
+  #   namespace: kube-system
+  #   atomic: true
+  #   chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/spegel'
+  #   needs: ['kube-system/coredns']
+  #
+  # # waiting for: https://github.com/sigstore/policy-controller/pull/1725
+  # # - name: policy-controller
+  # #   namespace: cosign-system
+  # #   atomic: true
+  # #   chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/cosign-system/policy-controller'
+  # #   needs: ['kube-system/spegel']
+  # #   hooks:
+  # #     # Wait for policy-controller CRDs to be available
+  # #     - events: ['postsync']
+  # #       command: bash
+  # #       args:
+  # #         - -c
+  # #         - >-
+  # #           until kubectl get crd clusterimagepolicies.policy.sigstore.dev &>/dev/null;
+  # #           do sleep 5; done
+  # #       showlogs: true
+  #
+  # - name: external-secrets
+  #   namespace: external-secrets
+  #   atomic: true
+  #   chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/external-secrets/external-secrets'
   #   needs: ['kube-system/spegel']
-  #   hooks:
-  #     # Wait for policy-controller CRDs to be available
-  #     - events: ['postsync']
-  #       command: bash
-  #       args:
-  #         - -c
-  #         - >-
-  #           until kubectl get crd clusterimagepolicies.policy.sigstore.dev &>/dev/null;
-  #           do sleep 5; done
-  #       showlogs: true
-
-  - name: external-secrets
-    namespace: external-secrets
-    atomic: true
-    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/external-secrets/external-secrets'
-    needs: ['cosign-system/policy-controller']
-
-  - name: argo-cd
-    namespace: argocd
-    atomic: true
-    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/argocd/argo-cd'
-    needs: ['external-secrets/external-secrets']
-    values:
-      - argo-cd:
-          server:
-            ingress:
-              enabled: false
+  #   # needs: ['cosign-system/policy-controller']
+  #
+  # - name: argo-cd
+  #   namespace: argocd
+  #   atomic: true
+  #   chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/argocd/argo-cd'
+  #   needs: ['external-secrets/external-secrets']
+  #   values:
+  #     - argo-cd:
+  #         server:
+  #           ingress:
+  #             enabled: false

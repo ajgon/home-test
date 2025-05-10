@@ -1,0 +1,7 @@
+---
+# yaml-language-server: $schema=../../../../schemas/cluster-values.json
+applications:
+  coredns:
+    namespace: kube-system
+    path: kubernetes/apps/kube-system/coredns
+    psp: privileged

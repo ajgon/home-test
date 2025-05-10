@@ -1,0 +1,7 @@
+---
+# yaml-language-server: $schema=../../../../schemas/cluster-values.json
+applications:
+  policy-controller:
+    namespace: cosign-system
+    path: kubernetes/apps/cosign-system/policy-controller
+    psp: restricted

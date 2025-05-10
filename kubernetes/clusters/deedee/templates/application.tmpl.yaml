@@ -1,0 +1,43 @@
+{{ range $appname, $application := .Values.applications }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: '{{ $appname }}'
+  namespace: argocd
+spec:
+  destination:
+    namespace: '{{ $application.namespace }}'
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: 'https://github.com/ajgon/home-test.git'
+      targetRevision: 'master'
+      path: '{{ $application.path }}'
+      {{- if $application.helmValues }}
+      helm:
+        values: |
+          {{- tpl $application.helmValues $ | nindent 10 }}
+      {{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+    {{- if $application.syncOptions }}
+    {{- range $syncOption := $application.syncOptions }}
+      - {{ $syncOption }}
+    {{- end}}
+    {{- end}}
+    {{- if $application.psp }}
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: {{ $application.psp }}
+        pod-security.kubernetes.io/audit: {{ $application.psp }}
+        pod-security.kubernetes.io/warn: {{ $application.psp }}
+    {{- end }}
+  {{- if $application.ignoreDifferences }}
+  ignoreDifferences:
+    {{- tpl $application.ignoreDifferences $ | nindent 4 }}
+  {{- end}}
+{{- end}}

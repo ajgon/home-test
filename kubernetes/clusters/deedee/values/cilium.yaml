@@ -23,11 +23,9 @@ applications:
           - "/data"
     helmValues: |
       cilium:
+        bgpControlPlane:
+          enabled: true
         cluster:
-          name: meemee
-        loadBalancer:
-          mode: snat
-        routingMode: tunnel
-        tunnelProtocol: geneve
+          name: deedee
       pools:
-        - 10.100.31.0/24
+        - 10.42.20.0/24

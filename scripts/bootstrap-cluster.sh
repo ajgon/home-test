@@ -220,16 +220,16 @@ function main() {
     fi
 
     # Bootstrap the Talos node configuration
-    apply_talos_config
-    bootstrap_talos
-    fetch_kubeconfig
+    # apply_talos_config
+    # bootstrap_talos
+    # fetch_kubeconfig
 
     # Apply resources and Helm releases
-    wait_for_nodes
-    wipe_rook_disks
-    apply_crds
-    apply_resources
-    # apply_helm_releases
+    # wait_for_nodes
+    # wipe_rook_disks
+    # apply_crds
+    # apply_resources
+    apply_helm_releases
 
     log info "Congrats! The cluster is bootstrapped and ArgoCD is syncing the Git repository"
 }
