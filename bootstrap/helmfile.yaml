@@ -15,6 +15,10 @@ releases:
       - cilium:
           hubble:
             enabled: false
+            relay:
+              enabled: false
+            ui:
+              enabled: false
           loadBalancer:
             mode: snat
           routingMode: tunnel
@@ -31,18 +35,18 @@ releases:
             do sleep 5; done
         showlogs: true
 
-  # - name: coredns
-  #   namespace: kube-system
-  #   atomic: true
-  #   chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/coredns'
-  #   needs: ['kube-system/cilium']
-  #
-  # - name: spegel
-  #   namespace: kube-system
-  #   atomic: true
-  #   chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/spegel'
-  #   needs: ['kube-system/coredns']
-  #
+  - name: coredns
+    namespace: kube-system
+    atomic: true
+    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/coredns'
+    needs: ['kube-system/cilium']
+
+  - name: spegel
+    namespace: kube-system
+    atomic: true
+    chart: '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/kube-system/spegel'
+    needs: ['kube-system/coredns']
+
   # # waiting for: https://github.com/sigstore/policy-controller/pull/1725
   # # - name: policy-controller
   # #   namespace: cosign-system

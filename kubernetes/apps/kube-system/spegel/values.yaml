@@ -3,7 +3,8 @@ spegel:
   grafanaDashboard:
     enabled: false  # @todo
   securityContext:
-    readOnlyRootFilesystem: true
+    # @todo: https://github.com/spegel-org/spegel/issues/863
+    # readOnlyRootFilesystem: true
     capabilities:
       drop:
         - ALL
@@ -13,6 +14,5 @@ spegel:
   serviceMonitor:
     enabled: true
   spegel:
-    appendMirrors: true
     containerdSock: /run/containerd/containerd.sock
     containerdRegistryConfigPath: /etc/cri/conf.d/hosts
