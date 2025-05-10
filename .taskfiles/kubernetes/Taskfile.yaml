@@ -18,9 +18,13 @@ tasks:
       - which kubectl
 
   node-shell:
-    desc: Open a shell to a node [NODE=required]
+    desc: Open a shell to a node [NODE=required] [IMAGE=optional]
     interactive: true
-    cmd: kubectl node-shell -n kube-system -x {{.NODE}}
+    cmd: kubectl node-shell -n kube-system -x {{.NODE}} {{.IMAGE_ARG}}
+    vars:
+      IMAGE_ARG:
+        sh: >-
+          {{ if .IMAGE }}echo -n '--image {{ .IMAGE }}'{{ end }}
     requires:
       vars: [NODE]
     preconditions:

@@ -10,6 +10,27 @@ machine:
   network:
     hostname: bubbles
 
+    interfaces:
+      - dhcp: true  # dummy object for deep merge of the original
+      - deviceSelector:
+          busPath: 0-1.0  # blossom
+        dhcp: false
+        mtu: 65520
+        addresses:
+          - 169.254.20.12/32
+        routes:
+          - network: 169.254.20.11/32
+            metric: 2048
+      - deviceSelector:
+          busPath: 1-1.0  # buttercup
+        dhcp: false
+        mtu: 65520
+        addresses:
+          - 169.254.20.12/32
+        routes:
+          - network: 169.254.20.13/32
+            metric: 2048
+
   disks:
     - device: /dev/disk/by-id/nvme-WD_Blue_SN570_500GB_22319R456109
       partitions:

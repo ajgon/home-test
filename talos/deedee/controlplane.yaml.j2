@@ -45,13 +45,15 @@ machine:
 
   install:
     # yamllint disable-line rule:line-length
-    image: "factory.rzegocki.dev/metal-installer-secureboot/0fc81843ca39d9043eb1b83a21567b2ab635c0f3125352551d36a7a4d2ef51f6:{{ ENV.TALOS_VERSION }}"
+    image: "factory.rzegocki.dev/metal-installer-secureboot/72493936fb6d5bc33a30c1ea1b674ccf442fb3bbb7f7ef00699aabece19e0250:{{ ENV.TALOS_VERSION }}"
     wipe: false
 
+    # they are ignored with UKI and SecureBoot, keeping them here for reference
     extraKernelArgs:
       - i915.enable_guc=3                    # Alder Lake CPU / iGPU, hw transcoding
       - intel_iommu=on                       # PCI Passthrough, hw transcoding
       - iommu=pt                             # PCI Passthrough, hw transcoding
+      - mitigations=off
       - net.ifnames=0                        # Classic ethernet names
       - sysctl.kernel.kexec_load_disabled=1  # kexec makes SecureBoot pointless
       - talos.auditd.disabled=1              # Too much noise
@@ -107,12 +109,13 @@ machine:
     net.ipv4.tcp_window_scaling: "1"       # Enable TCP window scaling to go beyond 64KB receive windows
     vm.nr_hugepages: "1024"                # PostgreSQL
 
-    # if doing 10G/s increase last value to 33554432
-    net.ipv4.tcp_rmem: 4096 87380 8388608  # Conservative receive buffer tuning (min, default, max in bytes)
-    net.ipv4.tcp_wmem: 4096 65536 8388608  # Conservative send buffer tuning (min, default, max in bytes)
+    # net.ipv4.tcp_rmem: 4096 87380 8388608  # Conservative receive buffer tuning (min, default, max in bytes)
+    # net.ipv4.tcp_wmem: 4096 65536 8388608  # Conservative send buffer tuning (min, default, max in bytes)
+    net.ipv4.tcp_rmem: 4096 87380 33554432  # Performant receive buffer tuning (min, default, max in bytes)
+    net.ipv4.tcp_wmem: 4096 65536 33554432  # Performant send buffer tuning (min, default, max in bytes)
 
   sysfs:
-    devices.system.cpu.intel_pstate.hwp_dynamic_boost: "0"  # TurboBoost is disabled on BIOS level anyway
+    devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
 
   udev:
     rules:
