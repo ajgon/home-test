@@ -17,23 +17,14 @@ set -Eeuo pipefail
 # shellcheck source=scripts/_lib.sh
 source "$(dirname "${0}")/_lib.sh"
 
-readonly NODE_BASE="${1:-}" NODE_PATCH="${2:-}"
-
-function cleanup() {
-    [[ -n "${TMPFILE:-}" && -f "${TMPFILE}" ]] && rm -f "${TMPFILE}"
-}
-trap cleanup ERR EXIT
+readonly NODE_BASE="${1:?}" NODE_PATCH="${2:?}"
 
 function main() {
     # shellcheck disable=SC2034
     local -r LOG_LEVEL="info"
 
     check_env BWS_ACCESS_TOKEN KUBERNETES_VERSION TALOS_VERSION
-    check_cli bws minijinja-cli yq
-
-    if [[ -z "${NODE_BASE}" || -z "${NODE_PATCH}" ]]; then
-        log error "Missing arguments"
-    fi
+    check_cli bws minijinja-cli talosctl
 
     if ! bws project list &>/dev/null; then
         log error "Failed to authenticate with Bitwarden Secrets"
@@ -49,11 +40,14 @@ function main() {
         exit 1
     fi
 
-    TMPFILE=$(mktemp)
-    echo "${patch}" > "${TMPFILE}"
+    BASE_TMPFILE=$(mktemp)
+    echo "${base}" >"${BASE_TMPFILE}"
+
+    PATCH_TMPFILE=$(mktemp)
+    echo "${patch}" >"${PATCH_TMPFILE}"
 
     # shellcheck disable=SC2016
-    if ! machine_config=$(echo "${base}" | yq --exit-status eval-all '. as $item ireduce ({}; . *d $item )' - "${TMPFILE}" 2>/dev/null) || [[ -z "${machine_config}" ]]; then
+    if ! machine_config=$(echo "${base}" | talosctl machineconfig patch "${BASE_TMPFILE}" --patch "@${PATCH_TMPFILE}") || [[ -z "${machine_config}" ]]; then
         log error "Failed to merge configs" "base=$(basename "${NODE_BASE}")" "patch=$(basename "${NODE_PATCH}")"
     fi
 
