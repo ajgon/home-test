@@ -27,5 +27,8 @@ applications:
           enabled: true
         cluster:
           name: deedee
+      bgpRouter:
+        name: unifi
+        ip: 10.42.20.1
       pools:
         - 10.42.20.0/24

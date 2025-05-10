@@ -14,6 +14,8 @@ external-secrets:
     serviceMonitor:
       enabled: true
       interval: 1m
+  grafanaDashboard:
+    enabled: false  # @todo
   image:
     repository: ghcr.io/external-secrets/external-secrets
   installCRDs: true
